@@ -1,6 +1,6 @@
-import React, { StrictMode, Suspense } from "react";
-import { RouterProvider } from "react-router-dom";
-import { createRoot } from "react-dom/client";
+import React, {StrictMode, Suspense} from "react";
+import {RouterProvider} from "react-router-dom";
+import {createRoot} from "react-dom/client";
 import router from "./Routes";
 
 // Get the root element safely, with a null check
