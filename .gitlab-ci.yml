@@ -7,34 +7,32 @@ stages:
 variables:
 #  NODE_ENV: 'production'
   CI: 'true'
-  VITE_BASE_URL: '/'  # Set if you have a specific base URL
+  VITE_BASE_URL:
 
 cache:
   paths:
     - node_modules/
 
-install_dependencies:
+install:
   stage: install
-  image: node:18  # Use an appropriate Node.js image version
+  image: node:18
   script:
     - npm install
 
-run_tests:
+test:
   stage: test
   image: node:18
   script:
     - npm test
-  only:
-    - main
 
-build_project:
+build:
   stage: build
   image: node:18
   script:
     - npm run build
   artifacts:
     paths:
-      - dist/  # Adjust this path if your build output is in a different folder
+      - dist/
   only:
     - main
 #
