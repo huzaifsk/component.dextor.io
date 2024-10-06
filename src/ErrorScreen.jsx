@@ -7,7 +7,7 @@ function ErrorScreen() {
         <div className="container">
           <div className="row">
             <div className="col-sm-8 offset-sm-2 text-gray-50 text-center -mt-52">
-              <div className="relative ">
+              <div className="relative">
                 <h1 className="relative text-9xl tracking-tighter-less text-shadow font-sans font-bold">
                   <span>4</span>
                   <span>0</span>
