@@ -1,0 +1,50 @@
+stages:
+  - install
+  - test
+  - build
+  - deploy
+
+variables:
+#  NODE_ENV: 'production'
+  CI: 'true'
+  VITE_BASE_URL: '/'  # Set if you have a specific base URL
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: install
+  image: node:18  # Use an appropriate Node.js image version
+  script:
+    - npm install
+
+run_tests:
+  stage: test
+  image: node:18
+  script:
+    - npm test
+  only:
+    - main
+
+build_project:
+  stage: build
+  image: node:18
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - dist/  # Adjust this path if your build output is in a different folder
+  only:
+    - main
+#
+#deploy:
+#  stage: deploy
+#  image: alpine
+#  script:
+#    - echo "Deploy step can be configured for your hosting service"
+#  environment:
+#    name: production
+#    url: https://example.com  # Replace with your production URL
+#  only:
+#    - main
