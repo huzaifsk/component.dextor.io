@@ -1,23 +1,26 @@
 import React, { useState } from "react";
+import { LiveProvider, LiveEditor, LivePreview, LiveError } from "react-live";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import copy from "/public/copy.svg";
 
-export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+export default function UiLivePreview() {
+  const code = `
+  function Preview() {
+    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    
+    const toggleMenu = () => {
+      setIsMenuOpen(!isMenuOpen);
+    };
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-  return (
-    <>
+    return (
       <nav className="block w-full max-w-screen-lg px-4 py-2 mx-auto bg-white shadow-md rounded-md lg:px-8 lg:py-3 mt-10">
         <div className="container flex flex-wrap items-center justify-between mx-auto text-slate-800">
-          <a
-            href="#"
-            className="mr-4 block cursor-pointer py-1.5 text-base text-slate-800 font-semibold"
-          >
+          <a href="#" className="mr-4 block cursor-pointer py-1.5 text-base text-slate-800 font-semibold">
             React Components
           </a>
-
-          <div className={`hidden lg:block`}>
+          <div className={\`hidden lg:block\`}>
             <ul className="flex flex-col gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
               <li className="flex items-center p-1 text-sm gap-x-2 text-slate-600">
                 <svg
@@ -107,37 +110,91 @@ export default function Navbar() {
             onClick={toggleMenu}
           >
             <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                ></path>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
             </span>
           </button>
         </div>
-
-        <div className={`${isMenuOpen ? "block" : "hidden"} dropdown`}>
+        <div className={\`\${isMenuOpen ? "block" : "hidden"} dropdown\`}>
           <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-full p-2 shadow">
-            <li>
-              <a>Homepage</a>
-            </li>
-            <li>
-              <a>Portfolio</a>
-            </li>
-            <li>
-              <a>About</a>
-            </li>
+            <li><a>Homepage</a></li>
+            <li><a>Portfolio</a></li>
+            <li><a>About</a></li>
           </ul>
         </div>
       </nav>
+    );
+  }
+  `;
+
+  const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState("preview");
+
+  return (
+    <>
+      <div className="container mx-auto p-4">
+        <div className="border rounded-lg shadow-lg overflow-hidden">
+          {/* Tabs */}
+          <div className="flex border-b">
+            <button
+              className={`flex-1 p-2 text-center ${
+                activeTab === "preview" ? "bg-gray-200" : "hover:bg-gray-100"
+              }`}
+              onClick={() => setActiveTab("preview")}
+            >
+              UI Preview
+            </button>
+            <button
+              className={`flex-1 p-2 text-center ${
+                activeTab === "code" ? "bg-gray-200" : "hover:bg-gray-100"
+              }`}
+              onClick={() => setActiveTab("code")}
+            >
+              Code
+            </button>
+          </div>
+
+          <div className="m-5 font-medium text-black text-3xl">
+            <h2>Nav Bar</h2>
+          </div>
+
+          {/* Content */}
+          <div className="p-4 flex justify-center">
+            {activeTab === "preview" ? (
+              <LiveProvider code={code}>
+                <div className="preview-wrapper">
+                  <LivePreview />
+                  <LiveError />
+                </div>
+              </LiveProvider>
+            ) : (
+              <div className="translate-y-0">
+                <LiveProvider code={code}>
+                  <CopyToClipboard
+                    text={code}
+                    onCopy={() => {
+                      setCopied(true);
+                      toast.success("Copied successfully");
+                      setTimeout(() => setCopied(false), 2000); // Reset copied state after 2 seconds
+                    }}
+                  >
+                    <div className="flex align-center m-2">
+                      <img src={copy} className="w-10 h-10 mt-2 p-2" />
+                      <button className="mt-2 p-2 bg-blue-500 text-white rounded">
+                        {copied ? "Code Copied!" : "Copy Code"}
+                      </button>
+                    </div>
+                  </CopyToClipboard>
+                  <div className="max-h-72 min-h-10 overflow-y-auto rounded-lg">
+                    <LiveEditor className="font-mono border rounded-lg" />
+                  </div>
+                </LiveProvider>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </>
   );
 }
