@@ -3,7 +3,6 @@ import { LiveProvider, LiveEditor, LivePreview, LiveError } from "react-live";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import copy from "/public/copy.svg";
 
 export default function UiLivePreview() {
   const code = `
@@ -180,7 +179,10 @@ export default function UiLivePreview() {
                     }}
                   >
                     <div className="flex align-center m-2">
-                      <img src={copy} className="w-10 h-10 mt-2 p-2" />
+                      <img
+                        src="/public/copy.svg"
+                        className="w-10 h-10 mt-2 p-2"
+                      />
                       <button className="mt-2 p-2 bg-blue-500 text-white rounded">
                         {copied ? "Code Copied!" : "Copy Code"}
                       </button>
