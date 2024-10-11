@@ -6,9 +6,7 @@ function Layout() {
   return (
     <>
       <main className="flex flex-col">
-        <div className="">
-          <Navbar />
-        </div>
+        <div className="">{/* <Navbar /> */}</div>
         <div className="flex">
           <Outlet />
         </div>

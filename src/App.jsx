@@ -1,7 +1,9 @@
-import React, {StrictMode, Suspense} from "react";
-import {RouterProvider} from "react-router-dom";
-import {createRoot} from "react-dom/client";
+import React, { StrictMode, Suspense } from "react";
+import { RouterProvider } from "react-router-dom";
+import { createRoot } from "react-dom/client";
 import router from "./Routes";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Get the root element safely, with a null check
 const rootElement = document.getElementById("root");
@@ -18,6 +20,18 @@ const App = () => {
   return (
     <>
       <RouterProvider router={router} />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 };
