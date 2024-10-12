@@ -15,7 +15,7 @@ export default function UiLivePreview() {
           ComponentData.map((component) => {
             const [activeTab, setActiveTab] = useState("preview");
 
-            const toggleTab = (tab) => {
+            const toggleTab = (tab = "") => {
               setActiveTab(tab);
             };
 
