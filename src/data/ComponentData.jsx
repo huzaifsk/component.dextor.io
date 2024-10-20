@@ -2,7 +2,7 @@ import Button from "../packages/button/Button";
 import Card from "../packages/card/Card";
 import Chips from "../packages/chips/Chips";
 
-const ComponentData = [
+export const ComponentData = [
   {
     id: 1,
     path: "/button",

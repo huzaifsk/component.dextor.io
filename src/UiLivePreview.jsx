@@ -3,7 +3,7 @@ import { LiveProvider, LiveEditor } from "react-live";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ComponentData from "./data/ComponentData";
+import { ComponentData } from "./data/ComponentData";
 
 export default function UiLivePreview() {
   const [copied, setCopied] = useState(false);
