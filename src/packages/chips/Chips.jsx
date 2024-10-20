@@ -10,7 +10,7 @@ export default function Chips({ onClose }) {
     { label: "Fig", color: "bg-orange-200 text-orange-800" },
   ];
 
-  const getChipClasses = (color) => {
+  const getChipClasses = (color = "") => {
     return `inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${color}`;
   };
 
