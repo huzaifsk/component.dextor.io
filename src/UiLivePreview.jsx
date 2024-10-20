@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { LiveProvider, LiveEditor, LivePreview, LiveError } from "react-live";
+import { LiveProvider, LiveEditor } from "react-live";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ComponentData } from "./data/componentData";
+import ComponentData from "./data/ComponentData";
 
 export default function UiLivePreview() {
   const [copied, setCopied] = useState(false);
@@ -52,13 +52,16 @@ export default function UiLivePreview() {
                   </div>
                   {/* Content */}
                   <div className="p-6" key={component.id}>
-                    <LiveProvider code={component.code}>
-                      {activeTab === "preview" ? (
-                        <div className="preview-wrapper w-full bg-gray-50 rounded-lg shadow-inner p-6 flex justify-center">
-                          <LivePreview />
-                          <LiveError />
-                        </div>
-                      ) : (
+                    {activeTab === "preview" ? (
+                      <div className="preview-wrapper w-full bg-gray-50 rounded-lg shadow-inner p-6 flex justify-center">
+                        {component.preview ? (
+                          component.preview()
+                        ) : (
+                          <p>No preview available</p>
+                        )}
+                      </div>
+                    ) : (
+                      <LiveProvider code={component.code}>
                         <div className="w-full">
                           <CopyToClipboard
                             text={component.code}
@@ -105,8 +108,8 @@ export default function UiLivePreview() {
                             />
                           </div>
                         </div>
-                      )}
-                    </LiveProvider>
+                      </LiveProvider>
+                    )}
                   </div>
                 </div>
               </React.Fragment>
