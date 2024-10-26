@@ -10,7 +10,7 @@ export default function UiLivePreview() {
 
   return (
     <>
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto p-4 grid lg:grid-cols-2 grid-cols-1 space-x-2 ">
         {ComponentData &&
           ComponentData.map((component) => {
             const [activeTab, setActiveTab] = useState("preview");
@@ -51,9 +51,12 @@ export default function UiLivePreview() {
                     </div>
                   </div>
                   {/* Content */}
-                  <div className="p-6" key={component.id}>
+                  <div
+                    className="p-6 flex justify-center items-center"
+                    key={component.id}
+                  >
                     {activeTab === "preview" ? (
-                      <div className="preview-wrapper w-full bg-gray-50 rounded-lg shadow-inner p-6 flex justify-center">
+                      <div className="preview-wrapper w-full bg-gray-50 rounded-lg shadow-inner p-6 flex justify-center max-h-96 overflow-x-auto">
                         {component.preview ? (
                           component.preview()
                         ) : (
@@ -61,10 +64,20 @@ export default function UiLivePreview() {
                         )}
                       </div>
                     ) : (
-                      <LiveProvider code={component.code}>
+                      <LiveProvider
+                        code={
+                          component && component.code
+                            ? component.code
+                            : "Please wait we are cooking it for you... 😉"
+                        }
+                      >
                         <div className="w-full">
                           <CopyToClipboard
-                            text={component.code}
+                            text={
+                              component && component.code
+                                ? component.code
+                                : "Please wait we are cooking it for you... 😉"
+                            }
                             onCopy={() => {
                               setCopied(true);
                               toast.dismiss();
