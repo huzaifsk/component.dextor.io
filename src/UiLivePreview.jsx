@@ -4,6 +4,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ComponentData } from "./data/ComponentData";
+import PackageJson from "../package.json";
 
 export default function UiLivePreview() {
   const [copied, setCopied] = useState(false);
@@ -141,7 +142,7 @@ export default function UiLivePreview() {
         <footer className="mt-16 pb-8 text-center border-t pt-8">
           <div className="flex justify-center items-center gap-6">
             <a
-              href="https://dextorlab.com"
+              href="https://labs.dextor.io"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-black transition-colors"
@@ -149,14 +150,14 @@ export default function UiLivePreview() {
               Dextor Lab
             </a>
             <a
-              href="https://github.com/dextorlab"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-black transition-colors"
             >
               GitHub
             </a>
-            <span className="text-gray-600">v1.0.0</span>
+            <span className="text-gray-600">v{PackageJson.version}</span>
           </div>
         </footer>
       </div>
