@@ -9,26 +9,33 @@ export default function RadioButtonExample() {
   };
 
   const options = [
-    { value: "option1", label: "Option 1 🚀" },
-    { value: "option2", label: "Option 2 🚀" },
-    { value: "option3", label: "Option 3 🚀" },
+    { value: "option1", label: "Basic Plan ⭐" },
+    { value: "option2", label: "Pro Plan 🌟" },
+    { value: "option3", label: "Enterprise Plan 💫" },
   ];
 
   return (
-    <div className="flex justify-center items-center ">
-      <div className="p-5 bg-white rounded shadow-md">
-        <h2 className="text-lg font-semibold mb-4 text-gray-800">
-          Choose an Option
+    <div className="flex justify-center items-center min-h-[400px] bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="p-8 bg-white rounded-2xl shadow-lg border border-gray-100 max-w-md w-full mx-4 backdrop-blur-sm hover:shadow-xl transition-all duration-300">
+        <h2 className="text-2xl font-bold mb-6 text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
+          Select Your Plan
         </h2>
-        <RadioButton
-          name="example"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={handleRadioChange}
-        />
-        <div className="mt-4 text-sm text-gray-600">
-          Selected Option:{" "}
-          <span className="font-bold text-gray-800">{selectedOption}</span>
+
+        <div className="mb-8">
+          <RadioButton
+            name="example"
+            options={options}
+            selectedOption={selectedOption}
+            onChange={handleRadioChange}
+          />
+        </div>
+
+        <div className="mt-6 p-4 bg-gray-50 rounded-xl">
+          <p className="text-sm text-gray-600 mb-2">Currently Selected:</p>
+          <p className="font-semibold text-gray-900 flex items-center gap-2">
+            <span className="inline-block w-2 h-2 bg-black rounded-full"></span>
+            {options.find((opt) => opt.value === selectedOption)?.label}
+          </p>
         </div>
       </div>
     </div>

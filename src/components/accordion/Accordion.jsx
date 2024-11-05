@@ -13,10 +13,10 @@ const Accordion = ({ items }) => {
         <div key={index} className="my-2 ">
           <button
             onClick={() => toggleAccordion(index)}
-            className="w-full text-left py-4 px-6 bg-blue-100 hover:bg-blue-200 focus:outline-none transition-colors duration-300 rounded-2xl"
+            className="w-full text-left py-4 px-6 bg-white hover:bg-black hover:text-white focus:outline-none transition-colors duration-300 rounded-2xl"
           >
             <div className="flex justify-between items-center">
-              <span className="font-semibold text-gray-700">{item.title}</span>
+              <span className="font-semibold">{item.title}</span>
               <svg
                 className={`w-5 h-5 transform transition-transform duration-300 ${
                   activeIndex === index ? "rotate-180" : "rotate-0"

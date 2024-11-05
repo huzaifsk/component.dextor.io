@@ -8,7 +8,11 @@ export default function ToggleButtonExample() {
 
   return (
     <div className="flex justify-center items-center">
-      <ToggleButton initialState={false} onToggle={handleToggle} />
+      <ToggleButton
+        initialState={false}
+        onToggle={handleToggle}
+        label={"toggle button"}
+      />
     </div>
   );
 }
