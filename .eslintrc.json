@@ -9,7 +9,7 @@
   "rules": {
     "@typescript-eslint/strict-boolean-expressions": "error",
     "@typescript-eslint/no-explicit-any": "error",
-    "react/prop-types": "off"  // Disable prop-types rule if using TypeScript for type checking
+    "react/prop-types": "off" // Disable prop-types rule if using TypeScript for type checking
   },
   "settings": {
     "react": {

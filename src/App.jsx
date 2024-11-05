@@ -10,7 +10,7 @@ const rootElement = document.getElementById("root");
 
 if (!rootElement) {
   throw new Error(
-    "Root element not found. Make sure the root div is in the HTML file."
+    "Root element not found. Make sure the root div is in the HTML file.",
   );
 }
 
@@ -41,7 +41,7 @@ app.render(
     <Suspense fallback={""}>
       <App />
     </Suspense>
-  </StrictMode>
+  </StrictMode>,
 );
 
 export default App;

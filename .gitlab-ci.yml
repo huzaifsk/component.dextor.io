@@ -5,8 +5,8 @@ stages:
   - deploy
 
 variables:
-#  NODE_ENV: 'production'
-  CI: 'true'
+  #  NODE_ENV: 'production'
+  CI: "true"
   VITE_BASE_URL:
 
 cache:
