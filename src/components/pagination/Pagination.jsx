@@ -1,3 +1,10 @@
+import {
+  faAnglesLeft,
+  faAnglesRight,
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 const Pagination = ({
@@ -57,7 +64,7 @@ const Pagination = ({
             }`}
           title="first"
         >
-          {`<<`}
+          <FontAwesomeIcon size="sm" icon={faAnglesLeft} />
         </button>
       )}
 
@@ -72,7 +79,7 @@ const Pagination = ({
           }`}
         title="previous"
       >
-        {`<`}
+        <FontAwesomeIcon size="sm" icon={faChevronLeft} />
       </button>
 
       {renderPageNumbers()}
@@ -88,7 +95,7 @@ const Pagination = ({
           }`}
         title="next"
       >
-        {`>`}
+        <FontAwesomeIcon size="sm" icon={faChevronRight} />
       </button>
 
       {showFirstLast && (
@@ -103,7 +110,7 @@ const Pagination = ({
             }`}
           title="last"
         >
-          {`>>`}
+          <FontAwesomeIcon size="sm" icon={faAnglesRight} />
         </button>
       )}
     </div>

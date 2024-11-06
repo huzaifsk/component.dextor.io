@@ -42,10 +42,8 @@ export default function GridListExample() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* <div className="mx-auto px-4 py-8"> */}
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100 pt-96">
       <GridList items={items} />
-      {/* </div> */}
     </div>
   );
 }
