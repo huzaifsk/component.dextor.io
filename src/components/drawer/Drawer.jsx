@@ -5,7 +5,7 @@ const Drawer = ({ isOpen, onClose, children }) => {
     <>
       {/* Overlay */}
       <div
-        className={`fixed inset-0 bg-black/30 backdrop-blur-sm transition-all duration-300 ${
+        className={`fixed inset-0 z-[100] bg-black/30 backdrop-blur-sm transition-all duration-300 ${
           isOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -15,7 +15,7 @@ const Drawer = ({ isOpen, onClose, children }) => {
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 left-0 w-80 h-full bg-white shadow-2xl transition-all duration-300 transform backdrop-blur-md border-r border-black/10 ${
+        className={`fixed top-0 left-0 w-80 h-full z-[100] bg-white shadow-2xl transition-all duration-300 transform backdrop-blur-md border-r border-black/10 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

@@ -22,26 +22,32 @@ function AvatarExample() {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center p-8 space-y-8">
-      <div className="space-y-2">
-        <h3 className="text-lg font-medium text-gray-700">Small Avatars</h3>
+    <div className="flex flex-col items-center justify-center pt-12">
+      <div className="py-4">
+        <h3 className="text-lg text-center font-medium text-gray-700">
+          Small Avatars
+        </h3>
         <Avatar images={images} names={names} size="sm" limit={3} />
       </div>
 
-      <div className="space-y-2">
-        <h3 className="text-lg font-medium text-gray-700">
+      <div className="py-4">
+        <h3 className="text-lg text-center font-medium text-gray-700">
           Medium Avatars (Default)
         </h3>
         <Avatar images={images} names={names} limit={4} />
       </div>
 
-      <div className="space-y-2">
-        <h3 className="text-lg font-medium text-gray-700">Large Avatars</h3>
+      <div className="py-4">
+        <h3 className="text-lg text-center font-medium text-gray-700">
+          Large Avatars
+        </h3>
         <Avatar images={images} names={names} size="lg" limit={5} />
       </div>
 
-      <div className="space-y-2">
-        <h3 className="text-lg font-medium text-gray-700">Show All Avatars</h3>
+      <div className="py-4">
+        <h3 className="text-lg text-center font-medium text-gray-700">
+          Show All Avatars
+        </h3>
         <Avatar images={images} names={names} limit={6} />
       </div>
     </div>

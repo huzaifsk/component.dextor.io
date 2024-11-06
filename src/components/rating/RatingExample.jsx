@@ -3,13 +3,13 @@ import Rating from "./Rating";
 
 function RatingExample() {
   return (
-    <div className="flex flex-col items-center justify-center p-12 space-y-8">
-      <div className="w-full max-w-md">
+    <div className="flex flex-col items-center justify-center">
+      <div className="w-full max-w-md pt-44">
         <h3 className="text-lg font-medium text-gray-700 mb-4">Basic Rating</h3>
         <Rating maxRating={5} onRatingChange={(value) => console.log(value)} />
       </div>
 
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md py-6">
         <h3 className="text-lg font-medium text-gray-700 mb-4">Small Rating</h3>
         <Rating
           maxRating={5}
@@ -18,7 +18,7 @@ function RatingExample() {
         />
       </div>
 
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md py-6">
         <h3 className="text-lg font-medium text-gray-700 mb-4">Large Rating</h3>
         <Rating
           maxRating={5}
@@ -27,7 +27,7 @@ function RatingExample() {
         />
       </div>
 
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md py-6">
         <h3 className="text-lg font-medium text-gray-700 mb-4">
           Rating with Initial Value
         </h3>

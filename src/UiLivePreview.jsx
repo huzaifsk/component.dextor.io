@@ -16,7 +16,7 @@ export default function UiLivePreview() {
           Dextor Components
         </h1>
 
-        <div className="grid lg:grid-cols-2 grid-cols-1 gap-8">
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 auto-rows-auto">
           {ComponentData &&
             ComponentData.map((component) => {
               const [activeTab, setActiveTab] = useState("preview");
@@ -27,7 +27,7 @@ export default function UiLivePreview() {
 
               return (
                 <React.Fragment key={component.id}>
-                  <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                  <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden h-fit">
                     <div className="p-6 border-b border-gray-200">
                       <h2 className="text-2xl font-semibold text-gray-900">
                         {component.title}
@@ -63,7 +63,7 @@ export default function UiLivePreview() {
                     {/* Content */}
                     <div className="p-6" key={component.id}>
                       {activeTab === "preview" ? (
-                        <div className="preview-wrapper w-full bg-gray-50 rounded-lg p-8 flex justify-center items-center min-h-[200px] max-h-[400px] overflow-auto">
+                        <div className=" h-[350px] w-full bg-gray-50 rounded-lg p-8 flex justify-center items-center overflow-auto z-0">
                           {component.preview ? (
                             component.preview()
                           ) : (
