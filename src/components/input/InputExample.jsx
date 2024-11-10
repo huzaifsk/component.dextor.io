@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input } from "./Input";
+import Input from "./Input";
 
 export default function InputExample() {
   const [text, setText] = useState("");

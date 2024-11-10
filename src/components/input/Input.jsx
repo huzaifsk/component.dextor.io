@@ -1,12 +1,6 @@
 import React from "react";
 
-export const Input = ({
-  type = "text",
-  placeholder,
-  value,
-  onChange,
-  ...props
-}) => {
+const Input = ({ type = "text", placeholder, value, onChange, ...props }) => {
   return (
     <input
       type={type}
@@ -18,3 +12,5 @@ export const Input = ({
     />
   );
 };
+
+export default Input;
