@@ -9,26 +9,26 @@ export default {
   input: path.resolve(__dirname, "src/components/index.js"),
   output: [
     {
-      file: "dist/index.cjs.js",
+      file: "dist/index.cjs.js", // CommonJS output
       format: "cjs",
       exports: "named",
     },
     {
-      file: "dist/index.esm.js",
+      file: "dist/index.esm.js", // ES module output
       format: "esm",
       exports: "named",
     },
   ],
   plugins: [
     peerDepsExternal(),
-    resolve(),
-    commonjs(),
+    resolve(), // Resolves node modules
+    commonjs(), // Converts CommonJS to ES modules
     babel({
       exclude: "node_modules/**", // Exclude dependencies
       babelHelpers: "bundled", // Necessary for Babel to work correctly
       presets: ["@babel/preset-react"], // Add JSX support
     }),
-    terser(),
+    terser(), // Minify the output
   ],
-  external: ["react", "react-dom"],
+  external: ["react", "react-dom"], // Marks React and ReactDOM as external
 };
