@@ -1,13 +1,38 @@
 {
   "name": "dextor-components",
   "private": false,
-  "version": "1.1.12",
+  "version": "1.1.19",
+  "license": "MIT",
   "type": "module",
-  "main": "src/components/index.js",
-  "module": "dist/index.esm.js",
+  "main": "./cjs/index.cjs.js",
+  "module": "./esm/index.esm.js",
+  "homepage": "https://components.dextor.io/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dextor-io/component.dextor.io"
+  },
   "publishConfig": {
     "access": "public"
   },
+  "keywords": [
+    "react",
+    "component-library",
+    "ui-components",
+    "tailwindcss",
+    "vite",
+    "frontend",
+    "javascript",
+    "dextor",
+    "npm",
+    "design-system",
+    "ui",
+    "reactjs",
+    "component",
+    "components",
+    "ui-components",
+    "react-component",
+    "react-components"
+  ],
   "scripts": {
     "format": "prettier --write .",
     "dev": "vite",

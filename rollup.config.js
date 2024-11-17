@@ -9,12 +9,12 @@ export default {
   input: path.resolve(__dirname, "src/components/index.js"),
   output: [
     {
-      file: "dist/index.cjs.js", // CommonJS output
+      file: "./cjs/index.cjs.js", // CommonJS output
       format: "cjs",
       exports: "named",
     },
     {
-      file: "dist/index.esm.js", // ES module output
+      file: "./esm/index.esm.js", // ES module output
       format: "esm",
       exports: "named",
     },
