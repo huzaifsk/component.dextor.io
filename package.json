@@ -1,7 +1,7 @@
 {
   "name": "dextor-components",
   "private": false,
-  "version": "1.1.17",
+  "version": "1.1.18",
   "license": "MIT",
   "type": "module",
   "main": "src/components/index.js",
