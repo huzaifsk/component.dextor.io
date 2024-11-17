@@ -1,7 +1,8 @@
 {
   "name": "dextor-components",
   "private": false,
-  "version": "1.1.12",
+  "version": "1.1.15",
+  "license": "MIT",
   "type": "module",
   "main": "src/components/index.js",
   "module": "dist/index.esm.js",
