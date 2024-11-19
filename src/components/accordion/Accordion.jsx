@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 
-const Accordion = ({ items }) => {
+const Accordion = ({
+  items,
+  accordionStyle = "w-full mx-auto max-w-full",
+  buttonStyle = "w-full text-left py-4 px-6 bg-white hover:bg-black hover:text-white focus:outline-none transition-colors duration-300 rounded-2xl",
+  titleStyle = "font-semibold",
+  svgStyle = "w-5 h-5 transform transition-transform duration-300",
+  pathStyle = "strokeLinecap='round' strokeLinejoin='round' strokeWidth={2}",
+  contentStyle = "px-6 py-4 text-gray-600 bg-white rounded-2xl",
+  activeContentStyle = "max-h-40",
+  inactiveContentStyle = "max-h-0",
+}) => {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const toggleAccordion = (index) => {
@@ -8,17 +18,17 @@ const Accordion = ({ items }) => {
   };
 
   return (
-    <div className="w-full mx-auto max-w-full">
+    <div className={accordionStyle}>
       {items.map((item, index) => (
         <div key={index} className="my-2 ">
           <button
             onClick={() => toggleAccordion(index)}
-            className="w-full text-left py-4 px-6 bg-white hover:bg-black hover:text-white focus:outline-none transition-colors duration-300 rounded-2xl"
+            className={buttonStyle}
           >
             <div className="flex justify-between items-center">
-              <span className="font-semibold">{item.title}</span>
+              <span className={titleStyle}>{item.title}</span>
               <svg
-                className={`w-5 h-5 transform transition-transform duration-300 ${
+                className={`${svgStyle} ${
                   activeIndex === index ? "rotate-180" : "rotate-0"
                 }`}
                 fill="none"
@@ -37,12 +47,10 @@ const Accordion = ({ items }) => {
           </button>
           <div
             className={`overflow-hidden transition-all duration-500 ease-in-out ${
-              activeIndex === index ? "max-h-40" : "max-h-0"
+              activeIndex === index ? activeContentStyle : inactiveContentStyle
             }`}
           >
-            <div className="px-6 py-4 text-gray-600 bg-white rounded-2xl">
-              {item.content}
-            </div>
+            <div className={contentStyle}>{item.content}</div>
           </div>
         </div>
       ))}

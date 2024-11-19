@@ -26,12 +26,13 @@ const componentConfig = {
     code: `
 import React from "react";
 
-export default function Button({ onClick, text = "Click me" }) {
+export default function Button({
+  onClick,
+  text = "Click me",
+  className = "px-4 py-2 text-white bg-black rounded hover:bg-gray-700 outline-none",
+}) {
   return (
-    <button
-      onClick={onClick}
-      className="px-4 py-2 text-white bg-black rounded hover:bg-gray-700 outline-none"
-    >
+    <button onClick={onClick} className={className}>
       {text}
     </button>
   );
@@ -45,38 +46,37 @@ import React from "react";
 const Card = ({
   title = "title",
   description = "This is a modern card component with a share button. It features a clean design with a title, description text, and an interactive share button. The card has subtle hover effects and smooth transitions.",
-}) => {
-  
-  const handleShare = () => {
+  cardStyle = "rounded-xl w-1/2 min-w-fit overflow-hidden shadow-2xl bg-white p-6 hover:shadow-3xl transition-all duration-300 border border-gray-100",
+  titleStyle = "font-bold text-2xl mb-3 text-gray-800 tracking-tight",
+  descriptionStyle = "text-gray-600 text-base mb-6 leading-relaxed",
+  buttonStyle = "bg-black hover:bg-gray-800 text-white font-medium py-2.5 px-5 rounded-lg transition-colors duration-200 flex items-center gap-2",
+  svgStyle = "h-4 w-4",
+  pathStyle = "strokeLinecap='round' strokeLinejoin='round' strokeWidth={2}",
+  shareIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={svgStyle}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        path={pathStyle}
+        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+      />
+    </svg>
+  ),
+  shareFunction = () => {
     // Share functionality (you can customize this)
-  };
-
+    alert(\`Sharing: \${title}\`);
+  },
+}) => {
   return (
-    <div className="rounded-xl w-1/2 min-w-fit overflow-hidden shadow-2xl bg-white p-6 hover:shadow-3xl transition-all duration-300 border border-gray-100">
-      <div className="font-bold text-2xl mb-3 text-gray-800 tracking-tight">
-        {title}
-      </div>
-      <p className="text-gray-600 text-base mb-6 leading-relaxed">
-        {description}
-      </p>
-      <button
-        onClick={handleShare}
-        className="bg-black hover:bg-gray-800 text-white font-medium py-2.5 px-5 rounded-lg transition-colors duration-200 flex items-center gap-2"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-          />
-        </svg>
+    <div className={cardStyle}>
+      <div className={titleStyle}>{title}</div>
+      <p className={descriptionStyle}>{description}</p>
+      <button onClick={shareFunction} className={buttonStyle}>
+        {shareIcon}
         Share
       </button>
     </div>
@@ -152,42 +152,53 @@ export default function Chips() {
     code: `
 import React, { useState } from "react";
 
-const Modal = () => {
-  const [isOpen, setIsOpen] = useState(false);
+// Customizable Modal component with default styling
+const Modal = ({
+  // Customizable properties
+  isOpen = false, // Initial state of the modal
+  onOpen = () => {}, // Function to call when modal is opened
+  onClose = () => {}, // Function to call when modal is closed
+  modalTitle = "Modal Title", // Title of the modal
+  modalContent = "This is the content of the modal. You can place any content here.", // Content of the modal
+  openModalButton = "Open Modal", // Text on the button to open the modal
+  closeModalButton = "Close", // Text on the button to close the modal
+  modalStyle = "fixed inset-0 z-50", // Style for the modal container
+  overlayStyle = "fixed inset-0 bg-gray-900 bg-opacity-50", // Style for the overlay
+  modalContentStyle = "fixed inset-0 flex items-center justify-center pointer-events-none", // Style for the modal content container
+  modalInnerStyle = "bg-white rounded-xl shadow-2xl max-w-md w-full p-8 pointer-events-auto", // Style for the modal inner container
+  titleStyle = "text-2xl font-bold text-gray-800", // Style for the modal title
+  contentStyle = "text-gray-600 leading-relaxed mb-8", // Style for the modal content
+  closeButtonStyle = "text-gray-400 hover:text-gray-600 transition-colors duration-200", // Style for the close button
+  openButtonStyle = "px-5 py-2.5 bg-black hover:bg-gray-800 text-white rounded-lg transition-colors duration-200 font-medium", // Style for the open button
+}) => {
+  const [modalIsOpen, setModalIsOpen] = useState(isOpen); // State to manage the modal's open state
 
+  // Function to open the modal
   const openModal = () => {
-    setIsOpen(true);
+    setModalIsOpen(true);
+    onOpen(); // Call the custom onOpen function
   };
 
+  // Function to close the modal
   const closeModal = () => {
-    setIsOpen(false);
+    setModalIsOpen(false);
+    onClose(); // Call the custom onClose function
   };
 
   return (
     <>
-      <button
-        onClick={openModal}
-        className="px-5 py-2.5 bg-black hover:bg-gray-800 text-white rounded-lg transition-colors duration-200 font-medium"
-      >
-        Open Modal
+      <button onClick={openModal} className={openButtonStyle}>
+        {openModalButton}
       </button>
 
-      {isOpen && (
-        <div className="fixed inset-0 z-50">
-          <div
-            className="fixed inset-0 bg-gray-900 bg-opacity-50"
-            onClick={closeModal}
-          ></div>
-          <div className="fixed inset-0 flex items-center justify-center pointer-events-none">
-            <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 pointer-events-auto">
+      {modalIsOpen && (
+        <div className={modalStyle}>
+          <div className={overlayStyle} onClick={closeModal}></div>
+          <div className={modalContentStyle}>
+            <div className={modalInnerStyle}>
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">
-                  Modal Title
-                </h2>
-                <button
-                  onClick={closeModal}
-                  className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
-                >
+                <h2 className={titleStyle}>{modalTitle}</h2>
+                <button onClick={closeModal} className={closeButtonStyle}>
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -203,16 +214,10 @@ const Modal = () => {
                   </svg>
                 </button>
               </div>
-              <p className="text-gray-600 leading-relaxed mb-8">
-                This is the content of the modal. You can place any content
-                here.
-              </p>
+              <p className={contentStyle}>{modalContent}</p>
               <div className="flex justify-end">
-                <button
-                  onClick={closeModal}
-                  className="px-5 py-2.5 bg-black hover:bg-gray-800 text-white rounded-lg transition-colors duration-200 font-medium"
-                >
-                  Close
+                <button onClick={closeModal} className={openButtonStyle}>
+                  {closeModalButton}
                 </button>
               </div>
             </div>
@@ -231,7 +236,17 @@ export default Modal;
     code: `
 import React, { useState } from "react";
 
-const Accordion = ({ items }) => {
+const Accordion = ({
+  items,
+  accordionStyle = "w-full mx-auto max-w-full",
+  buttonStyle = "w-full text-left py-4 px-6 bg-white hover:bg-black hover:text-white focus:outline-none transition-colors duration-300 rounded-2xl",
+  titleStyle = "font-semibold",
+  svgStyle = "w-5 h-5 transform transition-transform duration-300",
+  pathStyle = "strokeLinecap='round' strokeLinejoin='round' strokeWidth={2}",
+  contentStyle = "px-6 py-4 text-gray-600 bg-white rounded-2xl",
+  activeContentStyle = "max-h-40",
+  inactiveContentStyle = "max-h-0",
+}) => {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const toggleAccordion = (index) => {
@@ -239,17 +254,17 @@ const Accordion = ({ items }) => {
   };
 
   return (
-    <div className="w-full mx-auto max-w-full">
+    <div className={accordionStyle}>
       {items.map((item, index) => (
         <div key={index} className="my-2 ">
           <button
             onClick={() => toggleAccordion(index)}
-            className="w-full text-left py-4 px-6 bg-white hover:bg-black hover:text-white focus:outline-none transition-colors duration-300 rounded-2xl"
+            className={buttonStyle}
           >
             <div className="flex justify-between items-center">
-              <span className="font-semibold">{item.title}</span>
+              <span className={titleStyle}>{item.title}</span>
               <svg
-                className={\`w-5 h-5 transform transition-transform duration-300 \${activeIndex === index ? "rotate-180" : "rotate-0"}\`}
+                className={\`\${svgStyle} \${activeIndex === index ? "rotate-180" : "rotate-0"}\`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -265,11 +280,9 @@ const Accordion = ({ items }) => {
             </div>
           </button>
           <div
-            className={\`overflow-hidden transition-all duration-500 ease-in-out \${activeIndex === index ? "max-h-40" : "max-h-0"}\`}
+            className={\`overflow-hidden transition-all duration-500 ease-in-out \${activeIndex === index ? activeContentStyle : inactiveContentStyle}\`}
           >
-            <div className="px-6 py-4 text-gray-600 bg-white rounded-2xl">
-              {item.content}
-            </div>
+            <div className={contentStyle}>{item.content}</div>
           </div>
         </div>
       ))}

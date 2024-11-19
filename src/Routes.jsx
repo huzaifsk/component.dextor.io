@@ -3,7 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import Layout from "./Layout";
 import ErrorScreen from "./ErrorScreen";
-import UiLivePreview from "./UiLivePreview";
+import HomePage from "./HomePage";
 
 const router = createBrowserRouter([
   {
@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <UiLivePreview />,
+        element: <HomePage />,
       },
     ],
   },
