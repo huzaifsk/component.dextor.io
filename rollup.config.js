@@ -2,7 +2,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import babel from "@rollup/plugin-babel";
-// import { terser } from "rollup-plugin-terser";
+import { terser } from "rollup-plugin-terser";
 import path from "path";
 
 export default {
@@ -28,7 +28,7 @@ export default {
       babelHelpers: "bundled", // Necessary for Babel to work correctly
       presets: ["@babel/preset-react"], // Add JSX support
     }),
-    // terser(), // Minify the output
+    terser(), // Minify the output
   ],
   external: ["react", "react-dom"], // Marks React and ReactDOM as external
 };
