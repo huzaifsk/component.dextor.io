@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ComponentData } from "./data/ComponentData";
 import PackageJson from "../package.json";
 
-export default function UiLivePreview() {
+export default function HomePage() {
   const [copied, setCopied] = useState(false);
 
   return (
@@ -15,6 +15,31 @@ export default function UiLivePreview() {
         <h1 className="text-4xl font-bold text-center mb-8 py-6">
           Dextor Components
         </h1>
+
+        {/* NPM Package Section */}
+        <div className="mt-4 p-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden h-fit mb-8">
+          <h2 className="text-2xl font-semibold text-gray-900">
+            Unlock Your Project's Full Potential
+          </h2>
+          <p className="text-gray-500">
+            Integrate our fully customizable components into your project with
+            ease by installing our NPM package.
+          </p>
+          <div className="flex justify-start items-center gap-6 pt-2">
+            <code className="bg-gray-100 px-2 py-1 rounded-md text-gray-700">
+              npm i dextor-components
+            </code>
+            OR
+            <a
+              href="https://www.npmjs.com/package/dextor-components"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-blue-700 transition-colors duration-300 ease-in-out"
+            >
+              Explore on NPM
+            </a>
+          </div>
+        </div>
 
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 auto-rows-auto">
           {ComponentData &&
