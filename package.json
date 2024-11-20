@@ -1,7 +1,7 @@
 {
   "name": "dextor-components",
   "private": false,
-  "version": "1.1.22",
+  "version": "1.1.23",
   "license": "MIT",
   "type": "module",
   "main": "./cjs/index.cjs.js",
