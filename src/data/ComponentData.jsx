@@ -295,13 +295,14 @@ export default Accordion;
   },
   input: {
     code: `
-  import React from "react";
+import React from "react";
 
-export const Input = ({
+const Input = ({
   type = "text",
   placeholder,
   value,
   onChange,
+  className = "px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors duration-200",
   ...props
 }) => {
   return (
@@ -310,11 +311,14 @@ export const Input = ({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors duration-200 "
+      className={className}
       {...props}
     />
   );
 };
+
+export default Input;
+
 
     `,
   },
@@ -526,16 +530,25 @@ export default function Sidebar() {
     `,
   },
   radiobutton: {
-    code: `import React, { useState } from "react";
+    code: `
+import React from "react";
 
-const RadioButton = ({ options, name, selectedOption, onChange }) => {
+const RadioButton = ({
+  options,
+  name,
+  selectedOption,
+  onChange,
+  containerStyle = "space-y-3",
+  labelStyle = "flex items-center space-x-4 cursor-pointer group hover:bg-gray-50/50 p-3 rounded-xl transition-all duration-300 backdrop-blur-sm relative",
+  inputStyle = "appearance-none w-5 h-5 border-2 border-gray-300 rounded-full checked:border-black checked:border-[6px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition-all duration-300 hover:border-gray-600",
+  hoverEffectStyle = "absolute inset-0 bg-gray-100 scale-0 rounded-full transition-transform duration-300 group-hover:scale-150 opacity-0 group-hover:opacity-30",
+  labelTextStyle = "text-gray-700 font-medium group-hover:text-black transition-colors duration-300",
+  descriptionTextStyle = "text-sm text-gray-500 group-hover:text-gray-900 transition-colors duration-300",
+}) => {
   return (
-    <div className="space-y-3">
+    <div className={containerStyle}>
       {options.map((option, index) => (
-        <label
-          key={index}
-          className="flex items-center space-x-4 cursor-pointer group hover:bg-gray-50/50 p-3 rounded-xl transition-all duration-300 backdrop-blur-sm relative"
-        >
+        <label key={index} className={labelStyle}>
           <div className="relative">
             <input
               type="radio"
@@ -543,18 +556,14 @@ const RadioButton = ({ options, name, selectedOption, onChange }) => {
               value={option.value}
               checked={selectedOption === option.value}
               onChange={() => onChange(option.value)}
-              className="appearance-none w-5 h-5 border-2 border-gray-300 rounded-full checked:border-black checked:border-[6px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition-all duration-300 hover:border-gray-600"
+              className={inputStyle}
             />
-            <div className="absolute inset-0 bg-gray-100 scale-0 rounded-full transition-transform duration-300 group-hover:scale-150 opacity-0 group-hover:opacity-30" />
+            <div className={hoverEffectStyle} />
           </div>
           <div className="flex flex-col">
-            <span className="text-gray-700 font-medium group-hover:text-black transition-colors duration-300">
-              {option.label}
-            </span>
+            <span className={labelTextStyle}>{option.label}</span>
             {option.description && (
-              <span className="text-sm text-gray-500 group-hover:text-gray-900 transition-colors duration-300">
-                {option.description}
-              </span>
+              <span className={descriptionTextStyle}>{option.description}</span>
             )}
           </div>
         </label>
@@ -563,12 +572,23 @@ const RadioButton = ({ options, name, selectedOption, onChange }) => {
   );
 };
 
-export default RadioButton;`,
+export default RadioButton;
+`,
   },
   checkbox: {
-    code: `import React from "react";
+    code: `
+import React from "react";
 
-const Checkbox = ({ options = [], selectedOptions = [], onChange }) => {
+const Checkbox = ({
+  options = [],
+  selectedOptions = [],
+  onChange,
+  containerStyle = "flex flex-col space-y-3",
+  labelStyle = "flex items-center space-x-3 cursor-pointer group hover:bg-gray-50 p-2 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200",
+  inputStyle = "peer appearance-none w-5 h-5 border-2 border-gray-300 rounded-md checked:border-black checked:bg-black outline-none transition-all duration-200",
+  svgStyle = "absolute w-3 h-3 text-white scale-0 peer-checked:scale-100 transition-transform duration-200 pointer-events-none",
+  labelTextStyle = "text-gray-700 font-medium select-none group-hover:text-gray-900 transition-colors duration-200 text-sm",
+}) => {
   const handleChange = (option) => {
     const newSelectedOptions = selectedOptions.includes(option)
       ? selectedOptions.filter((item) => item !== option)
@@ -577,21 +597,18 @@ const Checkbox = ({ options = [], selectedOptions = [], onChange }) => {
   };
 
   return (
-    <div className="flex flex-col space-y-3">
+    <div className={containerStyle}>
       {options.map((option) => (
-        <label
-          key={option.value}
-          className="flex items-center space-x-3 cursor-pointer group hover:bg-gray-50 p-2 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200"
-        >
+        <label key={option.value} className={labelStyle}>
           <div className="relative flex items-center justify-center">
             <input
               type="checkbox"
               checked={selectedOptions.includes(option.value)}
               onChange={() => handleChange(option.value)}
-              className="peer appearance-none w-5 h-5 border-2 border-gray-300 rounded-md checked:border-black checked:bg-black outline-none transition-all duration-200"
+              className={inputStyle}
             />
             <svg
-              className="absolute w-3 h-3 text-white scale-0 peer-checked:scale-100 transition-transform duration-200 pointer-events-none"
+              className={svgStyle}
               viewBox="0 0 16 16"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -605,30 +622,36 @@ const Checkbox = ({ options = [], selectedOptions = [], onChange }) => {
               />
             </svg>
           </div>
-          <span className="text-gray-700 font-medium select-none group-hover:text-gray-900 transition-colors duration-200 text-sm">
-            {option.label}
-          </span>
+          <span className={labelTextStyle}>{option.label}</span>
         </label>
       ))}
     </div>
   );
 };
 
-export default Checkbox;`,
+export default Checkbox;
+`,
   },
   rangeinput: {
-    code: `import React from "react";
+    code: `
+import React from "react";
 
-const RangeInput = ({ label, min, max, value, onChange }) => {
+const RangeInput = ({
+  label,
+  min,
+  max,
+  value,
+  onChange,
+  labelStyle = "text-gray-800 font-medium tracking-wide",
+  valueStyle = "px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium",
+  inputStyle = "w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-gray-300 [&::-webkit-slider-thumb]:transition-all [&::-webkit-slider-thumb]:duration-150 [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:hover:border-gray-400 focus:outline-none",
+  minMaxStyle = "text-xs text-gray-500",
+}) => {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-3">
-        <label className="text-gray-800 font-medium tracking-wide">
-          {label}
-        </label>
-        <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
-          {value}
-        </span>
+        <label className={labelStyle}>{label}</label>
+        <span className={valueStyle}>{value}</span>
       </div>
       <div className="relative">
         <input
@@ -637,34 +660,59 @@ const RangeInput = ({ label, min, max, value, onChange }) => {
           max={max}
           value={value}
           onChange={onChange}
-          className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer
-          [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 
-          [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-md
-          [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-gray-300
-          [&::-webkit-slider-thumb]:transition-all [&::-webkit-slider-thumb]:duration-150
-          [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:hover:border-gray-400
-          focus:outline-none"
+          className={inputStyle}
         />
       </div>
       <div className="flex justify-between mt-2">
-        <span className="text-xs text-gray-500">{min}</span>
-        <span className="text-xs text-gray-500">{max}</span>
+        <span className={minMaxStyle}>{min}</span>
+        <span className={minMaxStyle}>{max}</span>
       </div>
     </div>
   );
 };
 
-export default RangeInput;`,
+export default RangeInput;
+`,
   },
   drawer: {
-    code: `import React from "react";
+    code: `
+import React from "react";
 
-const Drawer = ({ isOpen, onClose, children }) => {
+const Drawer = ({
+  isOpen,
+  onClose,
+  children,
+  overlayStyle = \`
+    fixed inset-0 z-[100] bg-black/30 backdrop-blur-sm
+    transition-all duration-300
+  \`,
+  drawerStyle = \`
+    fixed top-0 left-0 w-80 h-full z-[100] bg-white shadow-2xl
+    transition-all duration-300 transform backdrop-blur-md
+    border-r border-black/10
+  \`,
+  headerStyle = \`
+    flex justify-between items-center p-6
+    border-b border-black/10
+  \`,
+  closeButtonStyle = \`
+    p-2 rounded-full hover:bg-black/5
+    transition-colors duration-200 group
+  \`,
+  closeIconStyle = \`
+    w-5 h-5 text-black/50 group-hover:text-black
+    transition-colors duration-200
+  \`,
+  contentStyle = \`
+    p-6 overflow-y-auto
+    max-h-[calc(100vh-5rem)]
+  \`,
+}) => {
   return (
     <>
       {/* Overlay */}
       <div
-        className={\`fixed inset-0 bg-black/30 backdrop-blur-sm transition-all duration-300 \${
+        className={\`\${overlayStyle} \${
           isOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -674,18 +722,15 @@ const Drawer = ({ isOpen, onClose, children }) => {
 
       {/* Drawer */}
       <div
-        className={\`fixed top-0 left-0 w-80 h-full bg-white shadow-2xl transition-all duration-300 transform backdrop-blur-md border-r border-black/10 \${
+        className={\`\${drawerStyle} \${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }\`}
       >
-        <div className="flex justify-between items-center p-6 border-b border-black/10">
+        <div className={headerStyle}>
           <h2 className="text-xl font-semibold text-black">Menu</h2>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-full hover:bg-black/5 transition-colors duration-200 group"
-          >
+          <button onClick={onClose} className={closeButtonStyle}>
             <svg
-              className="w-5 h-5 text-black/50 group-hover:text-black transition-colors duration-200"
+              className={closeIconStyle}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -699,37 +744,37 @@ const Drawer = ({ isOpen, onClose, children }) => {
             </svg>
           </button>
         </div>
-        <div className="p-6 overflow-y-auto max-h-[calc(100vh-5rem)]">
-          {children}
-        </div>
+        <div className={contentStyle}>{children}</div>
       </div>
     </>
   );
 };
 
-export default Drawer;`,
+export default Drawer;
+`,
   },
   gridlist: {
-    code: `import React from "react";
+    code: `
+import React from "react";
 
-const GridList = ({ items }) => {
+const GridList = ({
+  items,
+  containerStyle = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 gap-6 md:gap-8 p-4 md:p-6",
+  itemStyle = "group bg-white p-4 md:p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 backdrop-blur-sm hover:-translate-y-1",
+  iconStyle = "text-2xl",
+  titleStyle = "text-lg md:text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600",
+  descriptionStyle = "text-sm md:text-base text-gray-600 leading-relaxed flex-grow",
+}) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 gap-6 md:gap-8 p-4 md:p-6">
+    <div className={containerStyle}>
       {items.map((item, index) => (
-        <div
-          key={index}
-          className="group bg-white p-4 md:p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 backdrop-blur-sm hover:-translate-y-1"
-        >
+        <div key={index} className={itemStyle}>
           <div className="flex flex-col h-full">
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl">{item.icon}</span>
-              <h3 className="text-lg md:text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600">
-                {item.title}
-              </h3>
+              <span className={iconStyle}>{item.icon}</span>
+              <h3 className={titleStyle}>{item.title}</h3>
             </div>
-            <p className="text-sm md:text-base text-gray-600 leading-relaxed flex-grow">
-              {item.description}
-            </p>
+            <p className={descriptionStyle}>{item.description}</p>
           </div>
         </div>
       ))}
@@ -737,12 +782,20 @@ const GridList = ({ items }) => {
   );
 };
 
-export default GridList;`,
+export default GridList;
+`,
   },
   togglebutton: {
-    code: `import React, { useState } from "react";
+    code: `
+import React, { useState } from "react";
 
-const ToggleButton = ({ initialState = false, onToggle, label }) => {
+const ToggleButton = ({
+  initialState = false,
+  onToggle,
+  label,
+  leftTitle = "OFF",
+  rightTitle = "ON",
+}) => {
   const [isOn, setIsOn] = useState(initialState);
 
   const handleToggle = () => {
@@ -755,33 +808,39 @@ const ToggleButton = ({ initialState = false, onToggle, label }) => {
   return (
     <div className="inline-flex items-center gap-3">
       {label && <span className="text-gray-700 font-medium">{label}</span>}
-      <button
-        onClick={handleToggle}
-        className={\`relative flex items-center justify-between w-14 h-7 rounded-full p-1 transition-all duration-300 ease-in-out \${
-          isOn ? "bg-black hover:bg-gray-800" : "bg-gray-300 hover:bg-gray-400"
-        } focus:outline-none focus:ring-2 focus:ring-offset-2 \${
-          isOn ? "focus:ring-black" : "focus:ring-gray-400"
-        }\`}
-        aria-pressed={isOn}
-        role="switch"
-      >
-        <span className="sr-only">{label || "Toggle"}</span>
-        <span
-          className={\`absolute w-5 h-5 bg-white rounded-full shadow-lg transform transition-transform duration-300 ease-in-out \${
-            isOn ? "translate-x-7" : "translate-x-0"
-          } hover:scale-110\`}
-        ></span>
-        <span
-          className={\`ml-1 text-xs font-medium \${isOn ? "opacity-0" : "text-gray-500"}\`}
+      <div className="flex items-center gap-2">
+        <span className="text-gray-700 font-medium">{leftTitle}</span>
+        <button
+          onClick={handleToggle}
+          className={\`relative flex items-center justify-between w-14 h-7 rounded-full p-1 transition-all duration-300 ease-in-out \${
+            isOn
+              ? "bg-black hover:bg-gray-800"
+              : "bg-gray-300 hover:bg-gray-400"
+          } focus:outline-none focus:ring-2 focus:ring-offset-2 \${
+            isOn ? "focus:ring-black" : "focus:ring-gray-400"
+          }\`}
+          aria-pressed={isOn}
+          role="switch"
         >
-          Off
-        </span>
-        <span
-          className={\`mr-1 text-xs font-medium \${isOn ? "text-white" : "opacity-0"}\`}
-        >
-          On
-        </span>
-      </button>
+          <span className="sr-only">{label || "Toggle"}</span>
+          <span
+            className={\`absolute w-5 h-5 bg-white rounded-full shadow-lg transform transition-transform duration-300 ease-in-out \${
+              isOn ? "translate-x-7" : "translate-x-0"
+            } hover:scale-110\`}
+          ></span>
+          <span
+            className={\`ml-1 text-xs font-medium \${
+              isOn ? "opacity-0" : "text-gray-500"
+            }\`}
+          ></span>
+          <span
+            className={\`mr-1 text-xs font-medium \${
+              isOn ? "text-white" : "opacity-0"
+            }\`}
+          ></span>
+        </button>
+        <span className="text-gray-700 font-medium">{rightTitle}</span>
+      </div>
     </div>
   );
 };
@@ -789,13 +848,20 @@ const ToggleButton = ({ initialState = false, onToggle, label }) => {
 export default ToggleButton;`,
   },
   dropdown: {
-    code: `import React, { useState } from "react";
+    code: `
+import React, { useState } from "react";
 
 const Dropdown = ({
   options,
   value,
   onChange,
   placeholder = "Select an option",
+  buttonStyle = \`w-full px-4 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black\`,
+  buttonTextStyle = \`block truncate text-gray-500\`,
+  buttonArrowStyle = \`w-5 h-5 text-gray-400 transition-transform duration-200\`,
+  listStyle = \`absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg max-h-60 overflow-auto\`,
+  listItemStyle = \`px-4 py-2 text-gray-900 cursor-pointer hover:bg-gray-100 transition-colors duration-150 ease-in-out\`,
+  listTextStyle = \`text-gray-900\`,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -809,20 +875,18 @@ const Dropdown = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+        className={buttonStyle}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
         <span
-          className={\`block truncate \${!value ? "text-gray-500" : "text-gray-900"}\`}
+          className={\`\${buttonTextStyle} \${!value ? "text-gray-500" : "text-gray-900"}\`}
         >
           {value ? value.label : placeholder}
         </span>
         <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
           <svg
-            className={\`w-5 h-5 text-gray-400 transition-transform duration-200 \${
-              isOpen ? "transform rotate-180" : ""
-            }\`}
+            className={\`\${buttonArrowStyle} \${isOpen ? "transform rotate-180" : ""}\`}
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -837,17 +901,17 @@ const Dropdown = ({
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg max-h-60 overflow-auto">
+        <div className={listStyle}>
           <ul className="py-1" role="listbox">
             {options.map((option, index) => (
               <li
                 key={index}
                 onClick={() => handleSelect(option)}
-                className="px-4 py-2 text-gray-900 cursor-pointer hover:bg-gray-100 transition-colors duration-150 ease-in-out"
+                className={listItemStyle}
                 role="option"
                 aria-selected={value?.value === option.value}
               >
-                {option.label}
+                <span className={listTextStyle}>{option.label}</span>
               </li>
             ))}
           </ul>
@@ -860,12 +924,23 @@ const Dropdown = ({
 export default Dropdown;`,
   },
   datepicker: {
-    code: `import React, { useState } from "react";
+    code: `
+import React, { useState, useEffect } from "react";
 
-function DatePicker() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+function DatePicker({
+  calendarColor = "bg-white",
+  buttonColor = "bg-black",
+  textColor = "text-white",
+  onDateChange,
+  value,
+}) {
+  const [selectedDate, setSelectedDate] = useState(value || new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [showMonthYearDropdown, setShowMonthYearDropdown] = useState(false);
+
+  useEffect(() => {
+    setSelectedDate(value || new Date());
+  }, [value]);
 
   const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
 
@@ -873,7 +948,7 @@ function DatePicker() {
     const days = [];
     const totalDays = daysInMonth(
       selectedDate.getFullYear(),
-      selectedDate.getMonth(),
+      selectedDate.getMonth()
     );
 
     for (let i = 1; i <= totalDays; i++) {
@@ -884,7 +959,7 @@ function DatePicker() {
 
   const months = [
     "January",
-    "February", 
+    "February",
     "March",
     "April",
     "May",
@@ -910,6 +985,9 @@ function DatePicker() {
     const newDate = new Date(selectedDate.setDate(day));
     setSelectedDate(newDate);
     setShowCalendar(false);
+    if (onDateChange) {
+      onDateChange(newDate);
+    }
   };
 
   const handleMonthChange = (monthIndex) => {
@@ -917,6 +995,9 @@ function DatePicker() {
     newDate.setMonth(monthIndex);
     setSelectedDate(newDate);
     setShowMonthYearDropdown(false);
+    if (onDateChange) {
+      onDateChange(newDate);
+    }
   };
 
   const handleYearChange = (year) => {
@@ -924,6 +1005,9 @@ function DatePicker() {
     newDate.setFullYear(year);
     setSelectedDate(newDate);
     setShowMonthYearDropdown(false);
+    if (onDateChange) {
+      onDateChange(newDate);
+    }
   };
 
   return (
@@ -932,7 +1016,7 @@ function DatePicker() {
       <div className="relative">
         <button
           onClick={() => setShowCalendar(!showCalendar)}
-          className="w-72 p-4 text-white bg-black rounded-xl shadow-lg hover:bg-gray-800 transition-all duration-300 flex items-center justify-between"
+          className={\`w-72 p-4 text-white \${buttonColor} rounded-xl shadow-lg hover:bg-gray-800 transition-all duration-300 flex items-center justify-between\`}
         >
           <span>{selectedDate.toLocaleDateString()}</span>
           <svg
@@ -952,11 +1036,13 @@ function DatePicker() {
         </button>
 
         {showCalendar && (
-          <div className="absolute mt-2 p-4 bg-white border-2 border-black rounded-xl shadow-xl z-50">
+          <div
+            className={\`absolute mt-2 p-4 \${calendarColor} border-2 border-black rounded-xl shadow-xl z-50\`}
+          >
             <div className="flex justify-between mb-4">
               <button
                 onClick={() => setShowMonthYearDropdown(!showMonthYearDropdown)}
-                className="px-4 py-1 bg-black text-white rounded flex-grow text-center"
+                className={\`px-4 py-1 \${buttonColor} \${textColor} rounded flex-grow text-center\`}
               >
                 {selectedDate.toLocaleString("default", {
                   month: "long",
@@ -975,11 +1061,7 @@ function DatePicker() {
                         <button
                           key={month}
                           onClick={() => handleMonthChange(index)}
-                          className={\`w-full text-left p-2 hover:bg-gray-100 \${
-                            index === selectedDate.getMonth()
-                              ? "bg-black text-white"
-                              : ""
-                          }\`}
+                          className={\`w-full text-left p-2 hover:bg-gray-100 \${index === selectedDate.getMonth() ? \`\${buttonColor} \${textColor}\` : ""}\`}
                         >
                           {month}
                         </button>
@@ -993,11 +1075,7 @@ function DatePicker() {
                         <button
                           key={year}
                           onClick={() => handleYearChange(year)}
-                          className={\`w-full text-left p-2 hover:bg-gray-100 \${
-                            year === selectedDate.getFullYear()
-                              ? "bg-black text-white"
-                              : ""
-                          }\`}
+                          className={\`w-full text-left p-2 hover:bg-gray-100 \${year === selectedDate.getFullYear() ? \`\${buttonColor} \${textColor}\` : ""}\`}
                         >
                           {year}
                         </button>
@@ -1013,9 +1091,7 @@ function DatePicker() {
                 <button
                   key={day}
                   onClick={() => handleDateClick(day)}
-                  className={\`p-2 rounded hover:bg-gray-200 \${
-                    day === selectedDate.getDate() ? "bg-black text-white" : ""
-                  }\`}
+                  className={\`p-2 rounded hover:bg-gray-200 \${day === selectedDate.getDate() ? \`\${buttonColor} \${textColor}\` : ""}\`}
                 >
                   {day}
                 </button>
@@ -1033,7 +1109,8 @@ function DatePicker() {
   );
 }
 
-export default DatePicker;`,
+export default DatePicker;
+`,
   },
   timepicker: {
     code: `import React, { useState } from "react";
