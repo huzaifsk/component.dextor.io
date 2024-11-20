@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-function DatePicker() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+function DatePicker({
+  calendarColor = "bg-white",
+  buttonColor = "bg-black",
+  textColor = "text-white",
+  onDateChange,
+  value,
+}) {
+  const [selectedDate, setSelectedDate] = useState(value || new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [showMonthYearDropdown, setShowMonthYearDropdown] = useState(false);
+
+  useEffect(() => {
+    setSelectedDate(value || new Date());
+  }, [value]);
 
   const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
 
@@ -11,7 +21,7 @@ function DatePicker() {
     const days = [];
     const totalDays = daysInMonth(
       selectedDate.getFullYear(),
-      selectedDate.getMonth(),
+      selectedDate.getMonth()
     );
 
     for (let i = 1; i <= totalDays; i++) {
@@ -48,6 +58,9 @@ function DatePicker() {
     const newDate = new Date(selectedDate.setDate(day));
     setSelectedDate(newDate);
     setShowCalendar(false);
+    if (onDateChange) {
+      onDateChange(newDate);
+    }
   };
 
   const handleMonthChange = (monthIndex) => {
@@ -55,6 +68,9 @@ function DatePicker() {
     newDate.setMonth(monthIndex);
     setSelectedDate(newDate);
     setShowMonthYearDropdown(false);
+    if (onDateChange) {
+      onDateChange(newDate);
+    }
   };
 
   const handleYearChange = (year) => {
@@ -62,6 +78,9 @@ function DatePicker() {
     newDate.setFullYear(year);
     setSelectedDate(newDate);
     setShowMonthYearDropdown(false);
+    if (onDateChange) {
+      onDateChange(newDate);
+    }
   };
 
   return (
@@ -70,7 +89,7 @@ function DatePicker() {
       <div className="relative">
         <button
           onClick={() => setShowCalendar(!showCalendar)}
-          className="w-72 p-4 text-white bg-black rounded-xl shadow-lg hover:bg-gray-800 transition-all duration-300 flex items-center justify-between"
+          className={`w-72 p-4 text-white ${buttonColor} rounded-xl shadow-lg hover:bg-gray-800 transition-all duration-300 flex items-center justify-between`}
         >
           <span>{selectedDate.toLocaleDateString()}</span>
           <svg
@@ -90,11 +109,13 @@ function DatePicker() {
         </button>
 
         {showCalendar && (
-          <div className="absolute mt-2 p-4 bg-white border-2 border-black rounded-xl shadow-xl z-50">
+          <div
+            className={`absolute mt-2 p-4 ${calendarColor} border-2 border-black rounded-xl shadow-xl z-50`}
+          >
             <div className="flex justify-between mb-4">
               <button
                 onClick={() => setShowMonthYearDropdown(!showMonthYearDropdown)}
-                className="px-4 py-1 bg-black text-white rounded flex-grow text-center"
+                className={`px-4 py-1 ${buttonColor} ${textColor} rounded flex-grow text-center`}
               >
                 {selectedDate.toLocaleString("default", {
                   month: "long",
@@ -115,7 +136,7 @@ function DatePicker() {
                           onClick={() => handleMonthChange(index)}
                           className={`w-full text-left p-2 hover:bg-gray-100 ${
                             index === selectedDate.getMonth()
-                              ? "bg-black text-white"
+                              ? `${buttonColor} ${textColor}`
                               : ""
                           }`}
                         >
@@ -133,7 +154,7 @@ function DatePicker() {
                           onClick={() => handleYearChange(year)}
                           className={`w-full text-left p-2 hover:bg-gray-100 ${
                             year === selectedDate.getFullYear()
-                              ? "bg-black text-white"
+                              ? `${buttonColor} ${textColor}`
                               : ""
                           }`}
                         >
@@ -152,7 +173,9 @@ function DatePicker() {
                   key={day}
                   onClick={() => handleDateClick(day)}
                   className={`p-2 rounded hover:bg-gray-200 ${
-                    day === selectedDate.getDate() ? "bg-black text-white" : ""
+                    day === selectedDate.getDate()
+                      ? `${buttonColor} ${textColor}`
+                      : ""
                   }`}
                 >
                   {day}
