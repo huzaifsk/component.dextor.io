@@ -4,13 +4,14 @@ import { createRoot } from "react-dom/client";
 import router from "./Routes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Analytics } from "@vercel/analytics/react";
 
 // Get the root element safely, with a null check
 const rootElement = document.getElementById("root");
 
 if (!rootElement) {
   throw new Error(
-    "Root element not found. Make sure the root div is in the HTML file.",
+    "Root element not found. Make sure the root div is in the HTML file."
   );
 }
 
@@ -40,8 +41,9 @@ app.render(
   <StrictMode>
     <Suspense fallback={""}>
       <App />
+      <Analytics />
     </Suspense>
-  </StrictMode>,
+  </StrictMode>
 );
 
 export default App;
