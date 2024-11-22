@@ -13,6 +13,16 @@ const Pagination = ({
   onPageChange,
   disabled = false,
   showFirstLast = true,
+  style = {
+    firstLastButton:
+      "px-3 py-1 text-xl font-bold rounded-md cursor-pointer hover:bg-black/10",
+    prevNextButton:
+      "px-3 py-1 text-xl font-bold rounded-md cursor-pointer hover:bg-black/10",
+    pageButton:
+      "px-3 py-1 mx-1 text-sm font-bold rounded-md cursor-pointer hover:bg-black/10",
+    activePageButton: "bg-black text-white",
+    disabledButton: "cursor-not-allowed opacity-50",
+  },
 }) => {
   const handlePageChange = (page) => {
     if (!disabled && page >= 1 && page <= totalPages) {
@@ -36,12 +46,8 @@ const Pagination = ({
           onClick={() => handlePageChange(i)}
           disabled={disabled}
           className={`px-3 py-1 mx-1 text-sm font-bold rounded-md
-            ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
-            ${
-              currentPage === i
-                ? "bg-black text-white"
-                : "bg-white text-black hover:bg-black/10"
-            }`}
+            ${disabled ? style.disabledButton : style.pageButton}
+            ${currentPage === i ? style.activePageButton : ""}`}
         >
           {i}
         </button>
@@ -59,8 +65,8 @@ const Pagination = ({
           className={`px-3 py-1 text-xl font-bold rounded-md
             ${
               disabled || currentPage === 1
-                ? "cursor-not-allowed opacity-50"
-                : "cursor-pointer hover:bg-black/10"
+                ? style.disabledButton
+                : style.firstLastButton
             }`}
           title="first"
         >
@@ -74,8 +80,8 @@ const Pagination = ({
         className={`px-3 py-1 text-xl font-bold rounded-md
           ${
             disabled || currentPage === 1
-              ? "cursor-not-allowed opacity-50"
-              : "cursor-pointer hover:bg-black/10"
+              ? style.disabledButton
+              : style.prevNextButton
           }`}
         title="previous"
       >
@@ -90,8 +96,8 @@ const Pagination = ({
         className={`px-3 py-1 text-xl font-bold rounded-md
           ${
             disabled || currentPage === totalPages
-              ? "cursor-not-allowed opacity-50"
-              : "cursor-pointer hover:bg-black/10"
+              ? style.disabledButton
+              : style.prevNextButton
           }`}
         title="next"
       >
@@ -105,8 +111,8 @@ const Pagination = ({
           className={`px-3 py-1 text-xl font-bold rounded-md
             ${
               disabled || currentPage === totalPages
-                ? "cursor-not-allowed opacity-50"
-                : "cursor-pointer hover:bg-black/10"
+                ? style.disabledButton
+                : style.firstLastButton
             }`}
           title="last"
         >

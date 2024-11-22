@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 
-function TimePicker({ value, onChange }) {
+function TimePicker({
+  value,
+  onChange,
+  buttonStyle,
+  textStyle,
+  pickerStyle,
+  doneButtonStyle,
+  selectedTimeStyle,
+}) {
   const [showPicker, setShowPicker] = useState(false);
   const [selectedTime, setSelectedTime] = useState(value || "");
   const [period, setPeriod] = useState("AM");
 
   const hours = Array.from({ length: 12 }, (_, i) =>
-    (i + 1).toString().padStart(2, "0"),
+    (i + 1).toString().padStart(2, "0")
   );
   const minutes = Array.from({ length: 60 }, (_, i) =>
-    i.toString().padStart(2, "0"),
+    i.toString().padStart(2, "0")
   );
 
   const handleTimeChange = (hour, minute) => {
@@ -38,9 +46,9 @@ function TimePicker({ value, onChange }) {
       <div className="relative">
         <button
           onClick={() => setShowPicker(!showPicker)}
-          className="w-64 p-3 text-white bg-black border border-gray-300 rounded-md hover:bg-gray-800 transition-all duration-200 flex items-center justify-between"
+          className={`w-64 p-3 ${buttonStyle || "text-white bg-black border border-gray-300 rounded-md hover:bg-gray-800 transition-all duration-200"} flex items-center justify-between`}
         >
-          <span>{selectedTime || "Select Time"}</span>
+          <span style={textStyle}>{selectedTime || "Select Time"}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -58,7 +66,9 @@ function TimePicker({ value, onChange }) {
         </button>
 
         {showPicker && (
-          <div className="absolute mt-2 p-4 bg-white border-2 border-black rounded-md shadow-xl z-50 w-72">
+          <div
+            className={`absolute mt-2 p-4 ${pickerStyle || "bg-white border-2 border-black rounded-md shadow-xl z-50 w-72"}`}
+          >
             <div className="flex gap-4 justify-between">
               <div className="h-48 overflow-y-auto scrollbar-thin">
                 <div className="font-semibold text-center mb-2">Hours</div>
@@ -68,7 +78,7 @@ function TimePicker({ value, onChange }) {
                     onClick={() =>
                       handleTimeChange(
                         hour,
-                        selectedTime?.split(":")[1]?.split(" ")[0] || "00",
+                        selectedTime?.split(":")[1]?.split(" ")[0] || "00"
                       )
                     }
                     className={`p-2 text-center hover:bg-gray-100 cursor-pointer rounded ${
@@ -87,7 +97,7 @@ function TimePicker({ value, onChange }) {
                     onClick={() =>
                       handleTimeChange(
                         selectedTime?.split(":")[0] || "12",
-                        minute,
+                        minute
                       )
                     }
                     className={`p-2 text-center hover:bg-gray-100 cursor-pointer rounded ${
@@ -127,7 +137,7 @@ function TimePicker({ value, onChange }) {
             <div className="mt-4 flex justify-end">
               <button
                 onClick={() => setShowPicker(false)}
-                className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+                className={`px-4 py-2 ${doneButtonStyle || "bg-black text-white rounded hover:bg-gray-800"}`}
               >
                 Done
               </button>
@@ -136,7 +146,7 @@ function TimePicker({ value, onChange }) {
         )}
       </div>
       {selectedTime && (
-        <p className="mt-3 text-black text-sm">
+        <p className={`mt-3 ${selectedTimeStyle || "text-black text-sm"}`}>
           Selected: <span className="font-medium">{selectedTime}</span>
         </p>
       )}

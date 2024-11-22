@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Layout from "./Layout";
 import ErrorScreen from "./ErrorScreen";
 import HomePage from "./HomePage";
+import Guide from "./Guide";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <HomePage />,
+      },
+      {
+        path: "guide",
+        element: <Guide />,
       },
     ],
   },
