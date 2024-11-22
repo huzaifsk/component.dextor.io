@@ -7,7 +7,7 @@ export { default as Breadcrumb } from "./breadcrumb/Breadcrumb.jsx";
 export { default as Card } from "./card/Card.jsx";
 export { default as Checkbox } from "./checkbox/Checkbox.jsx";
 export { default as Chips } from "./chips/Chips.jsx";
-export { default as DatePicker } from "./datepicker/DatePicker.jsx";
+export { default as DatePicker } from "./datepicker/datepicker.jsx";
 export { default as Drawer } from "./drawer/Drawer.jsx";
 export { default as GridList } from "./grid-list/GridList.jsx";
 export { default as Modal } from "./modal/Modal.jsx";
