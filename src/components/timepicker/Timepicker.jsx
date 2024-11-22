@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function TimePicker({
+function Timepicker({
   value,
   onChange,
   buttonStyle,
@@ -154,4 +154,4 @@ function TimePicker({
   );
 }
 
-export default TimePicker;
+export default Timepicker;

@@ -5,7 +5,7 @@ import Button from "../components/button/Button";
 import Card from "../components/card/Card";
 import CheckboxExample from "../components/checkbox/CheckboxExample";
 import Chips from "../components/chips/Chips";
-import Datepicker from "../components/datepicker/Datepicker";
+import Datepicker from "../components/date-picker/Datepicker";
 import DrawerExample from "../components/drawer/DrawerExample";
 import DropdownExample from "../components/dropdown/DropdownExample";
 import GridListExample from "../components/grid-list/GridListExample";
