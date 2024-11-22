@@ -3,6 +3,11 @@
       "env": {
         "NODE_VERSION": "18"
       }
-    }
-  }
-  
+    },
+    "rewrites": [
+        {
+          "source": "/:path*",
+          "destination": "/index.html"
+        }
+      ]
+}
