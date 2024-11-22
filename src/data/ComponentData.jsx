@@ -1115,16 +1115,24 @@ export default DatePicker;
   timepicker: {
     code: `import React, { useState } from "react";
 
-function TimePicker({ value, onChange }) {
+function TimePicker({
+  value,
+  onChange,
+  buttonStyle,
+  textStyle,
+  pickerStyle,
+  doneButtonStyle,
+  selectedTimeStyle,
+}) {
   const [showPicker, setShowPicker] = useState(false);
   const [selectedTime, setSelectedTime] = useState(value || "");
   const [period, setPeriod] = useState("AM");
 
   const hours = Array.from({ length: 12 }, (_, i) =>
-    (i + 1).toString().padStart(2, "0"),
+    (i + 1).toString().padStart(2, "0")
   );
   const minutes = Array.from({ length: 60 }, (_, i) =>
-    i.toString().padStart(2, "0"),
+    i.toString().padStart(2, "0")
   );
 
   const handleTimeChange = (hour, minute) => {
@@ -1153,9 +1161,9 @@ function TimePicker({ value, onChange }) {
       <div className="relative">
         <button
           onClick={() => setShowPicker(!showPicker)}
-          className="w-64 p-3 text-white bg-black border border-gray-300 rounded-md hover:bg-gray-800 transition-all duration-200 flex items-center justify-between"
+          className={\`w-64 p-3 \${buttonStyle || "text-white bg-black border border-gray-300 rounded-md hover:bg-gray-800 transition-all duration-200"} flex items-center justify-between\`}
         >
-          <span>{selectedTime || "Select Time"}</span>
+          <span style={textStyle}>{selectedTime || "Select Time"}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -1173,7 +1181,9 @@ function TimePicker({ value, onChange }) {
         </button>
 
         {showPicker && (
-          <div className="absolute mt-2 p-4 bg-white border-2 border-black rounded-md shadow-xl z-50 w-72">
+          <div
+            className={\`absolute mt-2 p-4 \${pickerStyle || "bg-white border-2 border-black rounded-md shadow-xl z-50 w-72"}\`}
+          >
             <div className="flex gap-4 justify-between">
               <div className="h-48 overflow-y-auto scrollbar-thin">
                 <div className="font-semibold text-center mb-2">Hours</div>
@@ -1183,12 +1193,10 @@ function TimePicker({ value, onChange }) {
                     onClick={() =>
                       handleTimeChange(
                         hour,
-                        selectedTime?.split(":")[1]?.split(" ")[0] || "00",
+                        selectedTime?.split(":")[1]?.split(" ")[0] || "00"
                       )
                     }
-                    className={\`p-2 text-center hover:bg-gray-100 cursor-pointer rounded \${
-                      selectedTime?.split(":")[0] === hour ? "bg-gray-200" : ""
-                    }\`}
+                    className={\`p-2 text-center hover:bg-gray-100 cursor-pointer rounded \${selectedTime?.split(":")[0] === hour ? "bg-gray-200" : ""}\`}
                   >
                     {hour}
                   </div>
@@ -1202,14 +1210,10 @@ function TimePicker({ value, onChange }) {
                     onClick={() =>
                       handleTimeChange(
                         selectedTime?.split(":")[0] || "12",
-                        minute,
+                        minute
                       )
                     }
-                    className={\`p-2 text-center hover:bg-gray-100 cursor-pointer rounded \${
-                      selectedTime?.split(":")[1]?.split(" ")[0] === minute
-                        ? "bg-gray-200"
-                        : ""
-                    }\`}
+                    className={\`p-2 text-center hover:bg-gray-100 cursor-pointer rounded \${selectedTime?.split(":")[1]?.split(" ")[0] === minute ? "bg-gray-200" : ""}\`}
                   >
                     {minute}
                   </div>
@@ -1219,21 +1223,13 @@ function TimePicker({ value, onChange }) {
                 <div className="font-semibold text-center mb-2">Period</div>
                 <button
                   onClick={togglePeriod}
-                  className={\`p-2 mb-2 rounded \${
-                    period === "AM"
-                      ? "bg-black text-white"
-                      : "bg-gray-100 hover:bg-gray-200"
-                  }\`}
+                  className={\`p-2 mb-2 rounded \${period === "AM" ? "bg-black text-white" : "bg-gray-100 hover:bg-gray-200"}\`}
                 >
                   AM
                 </button>
                 <button
                   onClick={togglePeriod}
-                  className={\`p-2 rounded \${
-                    period === "PM"
-                      ? "bg-black text-white"
-                      : "bg-gray-100 hover:bg-gray-200"
-                  }\`}
+                  className={\`p-2 rounded \${period === "PM" ? "bg-black text-white" : "bg-gray-100 hover:bg-gray-200"}\`}
                 >
                   PM
                 </button>
@@ -1242,7 +1238,7 @@ function TimePicker({ value, onChange }) {
             <div className="mt-4 flex justify-end">
               <button
                 onClick={() => setShowPicker(false)}
-                className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+                className={\`px-4 py-2 \${doneButtonStyle || "bg-black text-white rounded hover:bg-gray-800"}\`}
               >
                 Done
               </button>
@@ -1251,7 +1247,7 @@ function TimePicker({ value, onChange }) {
         )}
       </div>
       {selectedTime && (
-        <p className="mt-3 text-black text-sm">
+        <p className={\`mt-3 \${selectedTimeStyle || "text-black text-sm"}\`}>
           Selected: <span className="font-medium">{selectedTime}</span>
         </p>
       )}
@@ -1259,7 +1255,8 @@ function TimePicker({ value, onChange }) {
   );
 }
 
-export default TimePicker;`,
+export default TimePicker;
+`,
   },
   toast: {
     code: `import React, { useState, useEffect } from "react";
@@ -1439,20 +1436,32 @@ const Avatar = ({ images, names, limit = 4, size = "md" }) => {
 export default Avatar;`,
   },
   stepper: {
-    code: `import React from "react";
+    code: `
+import React from "react";
 
-const Stepper = ({ steps, currentStep }) => {
+const Stepper = ({
+  steps,
+  currentStep,
+  stepCircleStyle = {
+    completed: "border-black bg-black text-white",
+    incomplete: "border-gray-300 bg-white text-gray-500",
+  },
+  stepLabelStyle = {
+    completed: "text-black",
+    incomplete: "text-gray-500",
+  },
+  connectorLineStyle = {
+    completed: "bg-black",
+    incomplete: "bg-gray-300",
+  },
+}) => {
   return (
     <div className="flex items-center w-full">
       {steps.map((step, index) => (
         <div key={index} className="flex items-center">
           {/* Step circle */}
           <div
-            className={\`flex items-center justify-center w-8 h-8 rounded-full border-2 \${
-              index <= currentStep
-                ? "border-black bg-black text-white"
-                : "border-gray-300 bg-white text-gray-500"
-            }\`}
+            className={\`flex items-center justify-center w-8 h-8 rounded-full border-2 \${index <= currentStep ? stepCircleStyle.completed : stepCircleStyle.incomplete}\`}
           >
             {index < currentStep ? (
               <svg
@@ -1475,9 +1484,7 @@ const Stepper = ({ steps, currentStep }) => {
 
           {/* Step label */}
           <span
-            className={\`ml-2 text-sm font-medium \${
-              index <= currentStep ? "text-black" : "text-gray-500"
-            }\`}
+            className={\`ml-2 text-sm font-medium \${index <= currentStep ? stepLabelStyle.completed : stepLabelStyle.incomplete}\`}
           >
             {step}
           </span>
@@ -1485,9 +1492,7 @@ const Stepper = ({ steps, currentStep }) => {
           {/* Connector line */}
           {index < steps.length - 1 && (
             <div
-              className={\`w-12 h-0.5 mx-4 \${
-                index < currentStep ? "bg-black" : "bg-gray-300"
-              }\`}
+              className={\`w-12 h-0.5 mx-4 \${index < currentStep ? connectorLineStyle.completed : connectorLineStyle.incomplete}\`}
             />
           )}
         </div>
@@ -1496,7 +1501,8 @@ const Stepper = ({ steps, currentStep }) => {
   );
 };
 
-export default Stepper;`,
+export default Stepper;
+`,
   },
   rating: {
     code: `import React, { useState } from "react";
@@ -1567,17 +1573,32 @@ const Rating = ({
 export default Rating;`,
   },
   breadcrumb: {
-    code: `import React from "react";
+    code: `
+import React from "react";
 
-const Breadcrumb = ({ items }) => {
+const Breadcrumb = ({ items, style = {} }) => {
+  const defaultStyle = {
+    nav: "flex",
+    ol: "inline-flex items-center space-x-1 md:space-x-3",
+    li: "inline-flex items-center",
+    svg: "w-6 h-6 text-black/40",
+    a: "inline-flex items-center ml-1 text-sm font-medium text-black hover:text-black/70",
+    span: "inline-flex items-center ml-1 text-sm font-medium text-black/50",
+  };
+
+  const mergedStyle = {
+    ...defaultStyle,
+    ...style,
+  };
+
   return (
-    <nav className="flex" aria-label="Breadcrumb">
-      <ol className="inline-flex items-center space-x-1 md:space-x-3">
+    <nav className={mergedStyle.nav} aria-label="Breadcrumb">
+      <ol className={mergedStyle.ol}>
         {items.map((item, index) => (
-          <li key={index} className="inline-flex items-center">
+          <li key={index} className={mergedStyle.li}>
             {index > 0 && (
               <svg
-                className="w-6 h-6 text-black/40"
+                className={mergedStyle.svg}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -1592,17 +1613,13 @@ const Breadcrumb = ({ items }) => {
             {item.href ? (
               <a
                 href={item.href}
-                className={\`inline-flex items-center \${
-                  index === 0 ? "ml-0" : "ml-1"
-                } text-sm font-medium text-black hover:text-black/70\`}
+                className={\`\${mergedStyle.a} \${index === 0 ? "ml-0" : "ml-1"}\`}
               >
                 {item.label}
               </a>
             ) : (
               <span
-                className={\`inline-flex items-center \${
-                  index === 0 ? "ml-0" : "ml-1"
-                } text-sm font-medium text-black/50\`}
+                className={\`\${mergedStyle.span} \${index === 0 ? "ml-0" : "ml-1"}\`}
               >
                 {item.label}
               </span>
@@ -1617,7 +1634,15 @@ const Breadcrumb = ({ items }) => {
 export default Breadcrumb;`,
   },
   pagination: {
-    code: `import React from "react";
+    code: `
+import {
+  faAnglesLeft,
+  faAnglesRight,
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 
 const Pagination = ({
   currentPage,
@@ -1625,6 +1650,16 @@ const Pagination = ({
   onPageChange,
   disabled = false,
   showFirstLast = true,
+  style = {
+    firstLastButton:
+      "px-3 py-1 text-xl font-bold rounded-md cursor-pointer hover:bg-black/10",
+    prevNextButton:
+      "px-3 py-1 text-xl font-bold rounded-md cursor-pointer hover:bg-black/10",
+    pageButton:
+      "px-3 py-1 mx-1 text-sm font-bold rounded-md cursor-pointer hover:bg-black/10",
+    activePageButton: "bg-black text-white",
+    disabledButton: "cursor-not-allowed opacity-50",
+  },
 }) => {
   const handlePageChange = (page) => {
     if (!disabled && page >= 1 && page <= totalPages) {
@@ -1647,16 +1682,12 @@ const Pagination = ({
           key={i}
           onClick={() => handlePageChange(i)}
           disabled={disabled}
-          className={\`px-3 py-1 mx-1 text-sm font-medium rounded-md
-            \${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
-            \${
-              currentPage === i
-                ? "bg-black text-white"
-                : "bg-white text-black hover:bg-black/10"
-            }\`}
+          className={\`px-3 py-1 mx-1 text-sm font-bold rounded-md
+            \${disabled ? style.disabledButton : style.pageButton}
+            \${currentPage === i ? style.activePageButton : ""}\`}
         >
           {i}
-        </button>,
+        </button>
       );
     }
     return pages;
@@ -1668,62 +1699,26 @@ const Pagination = ({
         <button
           onClick={() => handlePageChange(1)}
           disabled={disabled || currentPage === 1}
-          className={\`px-3 py-1 text-sm font-medium rounded-md
-            \${
-              disabled || currentPage === 1
-                ? "cursor-not-allowed opacity-50"
-                : "cursor-pointer hover:bg-black/10"
-            }\`}
+          className={\`px-3 py-1 text-xl font-bold rounded-md
+            \${disabled || currentPage === 1
+                ? style.disabledButton
+                : style.firstLastButton}\`}
           title="first"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left-to-arc"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M21 12h-12" />
-            <path d="M13 16l-4 -4l4 -4" />
-            <path d="M12 3a9 9 0 1 0 0 18" />
-          </svg>
+          <FontAwesomeIcon size="sm" icon={faAnglesLeft} />
         </button>
       )}
 
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={disabled || currentPage === 1}
-        className={\`px-3 py-1 text-sm font-medium rounded-md
-          \${
-            disabled || currentPage === 1
-              ? "cursor-not-allowed opacity-50"
-              : "cursor-pointer hover:bg-black/10"
-          }\`}
+        className={\`px-3 py-1 text-xl font-bold rounded-md
+          \${disabled || currentPage === 1
+              ? style.disabledButton
+              : style.prevNextButton}\`}
         title="previous"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M5 12l14 0" />
-          <path d="M5 12l6 6" />
-          <path d="M5 12l6 -6" />
-        </svg>
+        <FontAwesomeIcon size="sm" icon={faChevronLeft} />
       </button>
 
       {renderPageNumbers()}
@@ -1731,62 +1726,26 @@ const Pagination = ({
       <button
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={disabled || currentPage === totalPages}
-        className={\`px-3 py-1 text-sm font-medium rounded-md
-          \${
-            disabled || currentPage === totalPages
-              ? "cursor-not-allowed opacity-50"
-              : "cursor-pointer hover:bg-black/10"
-          }\`}
+        className={\`px-3 py-1 text-xl font-bold rounded-md
+          \${disabled || currentPage === totalPages
+              ? style.disabledButton
+              : style.prevNextButton}\`}
         title="next"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M5 12l14 0" />
-          <path d="M13 18l6 -6" />
-          <path d="M13 6l6 6" />
-        </svg>
+        <FontAwesomeIcon size="sm" icon={faChevronRight} />
       </button>
 
       {showFirstLast && (
         <button
           onClick={() => handlePageChange(totalPages)}
           disabled={disabled || currentPage === totalPages}
-          className={\`px-3 py-1 text-sm font-medium rounded-md
-            \${
-              disabled || currentPage === totalPages
-                ? "cursor-not-allowed opacity-50"
-                : "cursor-pointer hover:bg-black/10"
-            }\`}
+          className={\`px-3 py-1 text-xl font-bold rounded-md
+            \${disabled || currentPage === totalPages
+                ? style.disabledButton
+                : style.firstLastButton}\`}
           title="last"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right-to-arc"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 12h12" />
-            <path d="M11 8l4 4l-4 4" />
-            <path d="M12 21a9 9 0 0 0 0 -18" />
-          </svg>
+          <FontAwesomeIcon size="sm" icon={faAnglesRight} />
         </button>
       )}
     </div>

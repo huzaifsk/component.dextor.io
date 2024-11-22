@@ -43,9 +43,24 @@ function PaginationExample() {
 
       <div className="w-full max-w-md py-4">
         <h3 className="text-lg font-medium text-black mb-4">
-          Single Page Pagination
+          Pagination with Custom Styling
         </h3>
-        <Pagination currentPage={1} totalPages={1} onPageChange={() => {}} />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={10}
+          onPageChange={setCurrentPage}
+          showFirstLast={true}
+          style={{
+            firstLastButton:
+              "px-4 py-2 text-xl font-bold rounded-lg cursor-pointer hover:bg-gray-200",
+            prevNextButton:
+              "px-4 py-2 text-xl font-bold rounded-lg cursor-pointer hover:bg-gray-200",
+            pageButton:
+              "px-4 py-2 mx-2 text-sm font-bold rounded-lg cursor-pointer hover:bg-gray-200",
+            activePageButton: "bg-blue-500 text-white",
+            disabledButton: "cursor-not-allowed opacity-50",
+          }}
+        />
       </div>
     </div>
   );
