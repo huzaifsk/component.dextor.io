@@ -15,7 +15,7 @@ export default function HomePage() {
       <div className="container mx-auto px-8 py-4">
         <h1 className="text-4xl font-bold text-center mb-8 py-6">
           Dextor Components
-          <span className="text-sm text-blue-500 absolute rotate-12">Beta</span>
+          {/* <span className="text-sm text-blue-500 absolute rotate-12">Beta</span> */}
         </h1>
 
         {/* NPM Package Section */}
