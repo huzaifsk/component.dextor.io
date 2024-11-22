@@ -41,7 +41,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "rollup-build": "rollup -c",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "vercel-debug": "ls -R src/components"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
