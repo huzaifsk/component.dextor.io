@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ComponentData } from "./data/ComponentData";
 import PackageJson from "../package.json";
+import { Chips } from "./components";
 
 export default function HomePage() {
   const [copied, setCopied] = useState(false);
@@ -14,6 +15,7 @@ export default function HomePage() {
       <div className="container mx-auto px-8 py-4">
         <h1 className="text-4xl font-bold text-center mb-8 py-6">
           Dextor Components
+          <span className="text-sm text-blue-500 absolute rotate-12">Beta</span>
         </h1>
 
         {/* NPM Package Section */}
@@ -25,18 +27,25 @@ export default function HomePage() {
             Integrate our fully customizable components into your project with
             ease by installing our NPM package.
           </p>
-          <div className="flex justify-start items-center gap-6 pt-2">
-            <code className="bg-gray-100 px-2 py-1 rounded-md text-gray-700">
-              npm i dextor-components
-            </code>
-            OR
-            <a
-              href="https://www.npmjs.com/package/dextor-components"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-700 transition-colors duration-300 ease-in-out"
-            >
-              Explore on NPM
+          <div className="flex justify-between items-center gap-6 pt-2">
+            <div className="flex items-center gap-6">
+              <code className="bg-gray-100 px-2 py-1 rounded-md text-gray-700">
+                npm i dextor-components
+              </code>
+              OR
+              <a
+                href="https://www.npmjs.com/package/dextor-components"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:text-blue-700 transition-colors duration-300 ease-in-out"
+              >
+                Explore on NPM
+              </a>
+            </div>
+            <a href="guide">
+              <button className="bg-black text-white font-bold py-2 px-4 rounded">
+                Get Started with Dextor Components
+              </button>
             </a>
           </div>
         </div>
