@@ -10,7 +10,14 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+cjs
+esm
 *.local
+
+# AI tooling artifacts
+.agents
+.claude
+skills-lock.json
 
 # Editor directories and files
 .vscode/*

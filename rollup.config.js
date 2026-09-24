@@ -1,34 +1,58 @@
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
+import typescript from "@rollup/plugin-typescript";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
-import babel from "@rollup/plugin-babel";
-import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
+import dts from "rollup-plugin-dts";
 import path from "path";
+import { fileURLToPath } from "url";
 
-export default {
-  input: path.resolve(__dirname, "src/components/index.js"),
-  output: [
-    {
-      file: "./cjs/index.cjs.js", // CommonJS output
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const input = path.resolve(__dirname, "src/components/index.ts");
+
+const jsPlugins = (outDir) => [
+  peerDepsExternal(),
+  resolve(),
+  commonjs(),
+  typescript({
+    tsconfig: "./tsconfig.lib.json",
+    declaration: false,
+    outDir,
+  }),
+  terser(),
+];
+
+export default [
+  {
+    input,
+    output: {
+      file: "./cjs/index.cjs",
       format: "cjs",
       exports: "named",
+      sourcemap: true,
     },
-    {
-      file: "./esm/index.esm.js", // ES module output
+    plugins: jsPlugins("./cjs"),
+    external: ["react", "react-dom", "react/jsx-runtime"],
+  },
+  {
+    input,
+    output: {
+      file: "./esm/index.esm.js",
       format: "esm",
       exports: "named",
+      sourcemap: true,
     },
-  ],
-  plugins: [
-    peerDepsExternal(),
-    resolve(), // Resolves node modules
-    commonjs(), // Converts CommonJS to ES modules
-    babel({
-      exclude: "node_modules/**", // Exclude dependencies
-      babelHelpers: "bundled", // Necessary for Babel to work correctly
-      presets: ["@babel/preset-react"], // Add JSX support
-    }),
-    terser(), // Minify the output
-  ],
-  external: ["react", "react-dom"], // Marks React and ReactDOM as external
-};
+    plugins: jsPlugins("./esm"),
+    external: ["react", "react-dom", "react/jsx-runtime"],
+  },
+  {
+    input,
+    output: { file: "./esm/index.d.ts", format: "esm" },
+    plugins: [dts({ tsconfig: "./tsconfig.lib.json" })],
+  },
+  {
+    input,
+    output: { file: "./cjs/index.d.ts", format: "esm" },
+    plugins: [dts({ tsconfig: "./tsconfig.lib.json" })],
+  },
+];
