@@ -5,6 +5,7 @@ import Layout from "./Layout";
 import ErrorScreen from "./ErrorScreen";
 import HomePage from "./HomePage";
 import Guide from "./Guide";
+import ComponentPage from "./site/ComponentPage";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "guide",
         element: <Guide />,
+      },
+      {
+        path: "components/:slug",
+        element: <ComponentPage />,
       },
     ],
   },

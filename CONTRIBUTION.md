@@ -39,10 +39,17 @@ npm install
 - Add or update unit tests if necessary.
 
 ### 6. **Test Your Changes**
-- Run tests locally to ensure everything works as expected:
+- Type-check and lint before opening a PR:
 
 ```bash
-npm run test
+npm run type-check
+npm run lint
+```
+
+- Run the docs site locally and check your component renders correctly in both light and dark mode:
+
+```bash
+npm run dev
 ```
 
 ### 7. **Commit and Push**

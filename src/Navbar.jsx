@@ -1,143 +1,207 @@
-import React, { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Link, NavLink, matchPath, useLocation } from "react-router-dom";
+import { Menu, X, Moon, Sun, Search } from "lucide-react";
+import { useTheme } from "./site/theme-provider";
+import { cn } from "./lib/utils";
 
-export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const links = [
+  { to: "/", label: "Components", end: true },
+  { to: "/guide", label: "Guide", end: false },
+];
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+function useMagnetic(strength = 0.35) {
+  const ref = useRef(/** @type {HTMLAnchorElement | null} */ (null));
+  const onMouseMove = (e) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) * strength;
+    const y = (e.clientY - rect.top - rect.height / 2) * strength;
+    el.style.transform = `translate(${x}px, ${y}px)`;
+  };
+  const onMouseLeave = () => {
+    if (ref.current) ref.current.style.transform = "";
+  };
+  return { ref, onMouseMove, onMouseLeave };
+}
+
+function MagneticNavLink({ to, end, children, onClick = undefined, registerRef }) {
+  const { ref, onMouseMove, onMouseLeave } = useMagnetic(0.3);
+  const setRefs = (node) => {
+    ref.current = node;
+    registerRef?.(to, node);
   };
   return (
-    <>
-      <nav className="block w-full max-w-screen-lg px-4 py-2 mx-auto bg-white shadow-md rounded-md lg:px-8 lg:py-3 mt-10">
-        <div className="container flex flex-wrap items-center justify-between mx-auto text-slate-800">
-          <a
-            href="#"
-            className="mr-4 block cursor-pointer py-1.5 text-base text-slate-800 font-semibold"
-          >
-            React Components
-          </a>
+    <NavLink
+      ref={setRefs}
+      to={to}
+      end={end}
+      onClick={onClick}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      className={({ isActive }) =>
+        cn(
+          "inline-block text-sm transition-transform duration-200 [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:text-foreground",
+          isActive ? "font-medium text-foreground" : "text-muted-foreground",
+        )
+      }
+    >
+      {children}
+    </NavLink>
+  );
+}
 
-          <div className={`hidden lg:block`}>
-            <ul className="flex flex-col gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-              <li className="flex items-center p-1 text-sm gap-x-2 text-slate-600">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6 text-slate-500"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z"
-                  />
-                </svg>
+export default function Navbar({ onOpenPalette }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0, opacity: 0 });
+  const linkRefs = useRef({});
+  const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
+  const isMac =
+    typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform ?? navigator.userAgent);
 
-                <a href="#" className="flex items-center">
-                  Pages
-                </a>
-              </li>
-              <li className="flex items-center p-1 text-sm gap-x-2 text-slate-600">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6 text-slate-500"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                  />
-                </svg>
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-                <a href="#" className="flex items-center">
-                  Account
-                </a>
-              </li>
-              <li className="flex items-center p-1 text-sm gap-x-2 text-slate-600">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6 text-slate-500"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
-                  />
-                </svg>
+  useEffect(() => {
+    const activeLink = links.find((link) =>
+      matchPath({ path: link.to, end: link.end }, location.pathname),
+    );
+    const el = activeLink ? linkRefs.current[activeLink.to] : null;
+    if (el) {
+      setIndicator({ left: el.offsetLeft, width: el.offsetWidth, opacity: 1 });
+    } else {
+      setIndicator((prev) => ({ ...prev, opacity: 0 }));
+    }
+  }, [location.pathname]);
 
-                <a href="#" className="flex items-center">
-                  Blocks
-                </a>
-              </li>
-              <li className="flex items-center p-1 text-sm gap-x-2 text-slate-600">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6 text-slate-500"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
-                  />
-                </svg>
+  return (
+    <header
+      className={cn(
+        "sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur transition-[box-shadow,background-color,border-color] duration-200",
+        scrolled ? "border-border bg-background/95 shadow-sm" : "border-transparent",
+      )}
+    >
+      <nav className="container mx-auto flex h-14 items-center justify-between px-4 lg:px-8">
+        <Link to="/" className="text-base font-semibold tracking-tight">
+          Dextor Components
+        </Link>
 
-                <a href="#" className="flex items-center">
-                  Docs
-                </a>
-              </li>
-            </ul>
-          </div>
+        <div className="relative hidden items-center gap-6 lg:flex">
+          {links.map((link) => (
+            <MagneticNavLink key={link.to} to={link.to} end={link.end} registerRef={(to, node) => {
+              linkRefs.current[to] = node;
+            }}>
+              {link.label}
+            </MagneticNavLink>
+          ))}
+          <span
+            aria-hidden="true"
+            className="absolute -bottom-[18px] h-0.5 bg-primary transition-[left,width,opacity] duration-200 [transition-timing-function:cubic-bezier(0.23,1,0.32,1)]"
+            style={{ left: indicator.left, width: indicator.width, opacity: indicator.opacity }}
+          />
+        </div>
+
+        <div className="flex items-center gap-2">
           <button
-            className="relative ml-auto h-6 max-h-[40px] w-6 max-w-[40px] select-none rounded-lg text-center align-middle text-xs font-medium uppercase text-inherit transition-all hover:bg-transparent focus:bg-transparent active:bg-transparent disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:hidden"
             type="button"
-            onClick={toggleMenu}
+            onClick={onOpenPalette}
+            className="hidden items-center gap-2 rounded-md border border-border px-2.5 py-1.5 text-sm text-muted-foreground transition-colors duration-150 hover:border-primary/40 hover:text-foreground sm:flex"
           >
-            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                ></path>
-              </svg>
+            <Search className="h-3.5 w-3.5" />
+            Search
+            <kbd className="ml-2 rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px]">
+              {isMac ? "⌘K" : "Ctrl K"}
+            </kbd>
+          </button>
+          <button
+            type="button"
+            onClick={onOpenPalette}
+            aria-label="Search"
+            className="rounded-md p-2 text-muted-foreground transition-[background-color,color,transform] duration-150 hover:bg-accent hover:text-foreground active:scale-90 sm:hidden"
+          >
+            <Search className="h-4 w-4" />
+          </button>
+          <a
+            href="https://www.npmjs.com/package/dextor-components"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:block"
+          >
+            npm
+          </a>
+          <a
+            href="https://github.com/dextor-io/component.dextor.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub repository"
+            className="rounded-md p-2 text-muted-foreground transition-[background-color,color,transform] duration-150 hover:bg-accent hover:text-foreground active:scale-90"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M12 .5C5.73.5.98 5.24.98 11.52c0 4.94 3.2 9.13 7.65 10.6.56.1.76-.24.76-.54 0-.27-.01-1-.02-1.96-3.11.68-3.77-1.5-3.77-1.5-.51-1.29-1.24-1.64-1.24-1.64-1.02-.7.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 1.71 2.62 1.22 3.26.93.1-.72.39-1.22.71-1.5-2.48-.28-5.1-1.24-5.1-5.53 0-1.22.44-2.22 1.15-3-.11-.28-.5-1.42.11-2.96 0 0 .94-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.14-1.45 3.08-1.15 3.08-1.15.61 1.54.22 2.68.11 2.96.72.78 1.15 1.78 1.15 3 0 4.3-2.62 5.24-5.12 5.52.4.35.76 1.03.76 2.08 0 1.5-.01 2.71-.01 3.08 0 .3.2.65.76.54A10.53 10.53 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5Z" />
+            </svg>
+          </a>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label="Toggle dark mode"
+            className="overflow-hidden rounded-md p-2 text-muted-foreground transition-[background-color,color,transform] duration-150 hover:bg-accent hover:text-foreground active:scale-90"
+          >
+            <span
+              key={theme}
+              className="block animate-in fade-in-0 zoom-in-50 spin-in-45 duration-200"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
             </span>
           </button>
-        </div>
-
-        <div className={`${isMenuOpen ? "block" : "hidden"} dropdown`}>
-          <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-full p-2 shadow">
-            <li>
-              <a>Homepage</a>
-            </li>
-            <li>
-              <a>Portfolio</a>
-            </li>
-            <li>
-              <a>About</a>
-            </li>
-          </ul>
+          <button
+            type="button"
+            className="rounded-md p-2 text-muted-foreground transition-[background-color,color,transform] duration-150 hover:bg-accent hover:text-foreground active:scale-90 lg:hidden"
+            onClick={() => setIsMenuOpen((open) => !open)}
+            aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
+          >
+            {isMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
+          </button>
         </div>
       </nav>
-    </>
+
+      {isMenuOpen && (
+        <div className="border-t border-border px-4 py-3 lg:hidden">
+          <ul className="flex flex-col gap-3">
+            {links.map((link) => (
+              <li key={link.to}>
+                <NavLink
+                  to={link.to}
+                  end={link.end}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-sm text-muted-foreground hover:text-foreground"
+                >
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </header>
   );
 }
