@@ -24,13 +24,13 @@ A modern React component library built on Radix UI primitives and styled with Ta
 ## 🌐 Website
 
 Discover full documentation, live previews, and component guides on our official website:
-👉 https://components.dextor.io/
+👉 https://component-dextor-io.pages.dev/
 
 ---
 
 ## 🧩 **Components**
 
-52 components across five categories — every one has a live playground and full props reference on the [website](https://components.dextor.io/).
+52 components across five categories — every one has a live playground and full props reference on the [website](https://component-dextor-io.pages.dev/).
 
 - **Form**: Button, Input, Textarea, Checkbox, Radio Group, Switch, Dropdown, Range Slider, Rating, Chips, Date Picker, Time Picker, Toggle / Toggle Group, File Upload, Label
 - **Overlay**: Modal, Drawer, Alert Dialog, Dropdown Menu, Context Menu, Popover, Hover Card, Tooltip, Command

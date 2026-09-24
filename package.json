@@ -1,7 +1,7 @@
 {
   "name": "dextor-components",
   "private": false,
-  "version": "2.0.3",
+  "version": "2.0.4",
   "license": "MIT",
   "type": "module",
   "main": "./cjs/index.cjs",
@@ -19,7 +19,7 @@
     },
     "./style.css": "./esm/style.css"
   },
-  "homepage": "https://components.dextor.io/",
+  "homepage": "https://component-dextor-io.pages.dev/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/huzaifsk/component.dextor.io.git"
