@@ -3,7 +3,7 @@
 A modern React component library built on Radix UI primitives and styled with Tailwind CSS. Fully typed, accessible by default, with real dark mode and 50+ components — from standard form/overlay primitives to polished micro-interaction components.
 
 [![NPM](https://img.shields.io/npm/v/dextor-components.svg)](https://www.npmjs.com/package/dextor-components)
-[![License](https://img.shields.io/npm/l/dextor-components)](https://github.com/dextor-io/component.dextor.io/blob/main/LICENSE)
+[![License](https://img.shields.io/npm/l/dextor-components)](https://github.com/huzaifsk/component.dextor.io/blob/main/LICENSE)
 [![Downloads](https://img.shields.io/npm/dm/dextor-components)](https://www.npmjs.com/package/dextor-components)
 
 ## 🚀 **Features**
@@ -118,7 +118,7 @@ function Nav() {
 Do you want to contribute or explore the source code? Clone the repository:
 
 ```bash
-git clone https://github.com/dextor-io/component.dextor.io.git
+git clone https://github.com/huzaifsk/component.dextor.io.git
 cd component.dextor.io
 npm install
 npm run dev

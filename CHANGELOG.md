@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.3
+
+Docs-only patch — no code changes.
+
+- Fixed `repository.url` and README repo links, which pointed at the stale `dextor-io/component.dextor.io` org repo (last pushed Nov 2024) instead of `huzaifsk/component.dextor.io`, where the source actually lives. This was breaking npm's auto-generated links to `CHANGELOG.md` and `LICENSE` on the package page (404).
+
 ## 2.0.2
 
 Docs-only patch — no code changes.
